@@ -25,7 +25,7 @@ Now you can use the plugin from the "Plugins" menu:
 
 **Remember:** this initial beta release requires to have a page in your document called "--nb--assets" where all assets are stored (this won't be needed on the next update). There is a [template] included in this plugin, placed in the "assets" folder.
   
----
+
   
 ### Add Comment `ctrl` + `alt` + `⌘` + `9`
 1. Select any layer of your document
@@ -36,12 +36,12 @@ That's it.
 
 ![Adding a comment](assets/readme_images/add_comment.gif?raw=true "Adding a comment")
   
----
+
   
 ### Realign comments `ctrl` + `alt` + `⌘` + `8`
 Run this command anytime to update the sidebar. Here is a list of things that you can do:
   
-  
+
   
 #### Reorder comments
 1. Put the comments in the order you want 
@@ -71,7 +71,7 @@ Again, all comments will be automatically reordered and renumbered.
 
 ![Delete comment](assets/readme_images/delete_comment.gif?raw=true "Delete comment")
   
----
+
   
 ### Toggle Sidebar Visibility `ctrl` + `alt` + `⌘` + `0`
 This command is pretty self-explanatory... toggle the visibility of the sidebar by running it.
