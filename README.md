@@ -44,8 +44,9 @@ Run this command anytime to update the sidebar. Here is a list of things that yo
 
   
 #### Reorder comments
-1. Put the comments in the order you want 
-2. Run the "realign comments" command. 
+1. Select the layer group that containts the comment you want to move
+2. Place it wherever you want (the plugin will automatically read the "y" value of that group to order the comments)
+3. Run the "realign comments" command
 
 They will automatically reorder and renumber.
 
