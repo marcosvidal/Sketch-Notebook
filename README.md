@@ -19,7 +19,7 @@ Now you can use the plugin from the "Plugins" menu:
 **Remember:** this initial release requires to have a page in your document called "--nb--assets" where all assets are stored (this won't be needed on the next update). There is a template included in this plugin, placed in the "assets" folder.
 
 ### Add Comment `ctrl` + `alt` + `⌘` + `9`
-Select any layer of your document and run this action, then you'll be asked to type the comment title and detail. That's it.
+Select any layer of your document and run this command, then you'll be asked to type the comment title and detail. That's it.
 
 ![Adding a comment](assets/readme_images/add_comment.gif?raw=true "Adding a comment")
 
