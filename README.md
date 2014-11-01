@@ -65,7 +65,7 @@ Just edit them as normal layers and then run "realign comments"
   
 #### Delete comment
 1. Select the layout group that contains the comment you want to remove,
-2. delete it and then,
+2. delete it,
 3. run "realign comments". 
 
 Again, all comments will be automatically reordered and renumbered.
