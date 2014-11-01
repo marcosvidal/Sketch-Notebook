@@ -55,7 +55,7 @@ Again, all comments will be automatically reordered and renumbered.
 
 ![Delete comment](assets/readme_images/delete_comment.gif?raw=true "Delete comment")
 
-**Title editing: ** If you edit the comment title and it reaches two lines or longer, you'll need to run the command "Realign Comments" twice to set everything in place ([see example]:assets/readme_images/edit_title.png?raw=true). This will be fixed in future releases.
+**Title editing: ** If you edit the comment title and it reaches two lines or longer, you'll need to run the command "Realign Comments" twice to set everything in place ([see example]). This will be fixed in future releases.
 
 ### Toggle Sidebar Visibility `ctrl` + `alt` + `⌘` + `0`
 This command is pretty self-explanatory... toggle the visibility of the sidebar by running it.
@@ -65,3 +65,4 @@ This command is pretty self-explanatory... toggle the visibility of the sidebar 
 
 
 [Download the plugin]:https://github.com/marcosvidal/Sketch-Notebook/archive/master.zip
+[see example]:assets/readme_images/edit_title.png?raw=true
