@@ -24,7 +24,7 @@ Select any layer of your document and run this command, then you'll be asked to 
 ![Adding a comment](assets/readme_images/add_comment.gif?raw=true "Adding a comment")
 
 ### Realign comments `ctrl` + `alt` + `⌘` + `8`
-Run this action anytime to realign or update the comments on the sidebar. Here is a list of things that you can do:
+Run this command anytime to update the sidebar. Here is a list of things that you can do:
 
 #### Reorder comments
 Put the comments in the order you want and then run the "realign comments" command. They will automatically reorder and renumber.
