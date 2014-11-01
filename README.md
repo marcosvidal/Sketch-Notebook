@@ -23,7 +23,7 @@ Now you can use the plugin from the "Plugins" menu:
   
 ## Using the plugin
 
-**Remember:** this initial beta release requires to have a page in your document called "--nb--assets" where all assets are stored (this won't be needed on the next update). There is a [template] included in this plugin, placed in the "assets" folder.
+>**Remember:** this initial beta release requires to have a page in your document called "--nb--assets" where all assets are stored (this won't be needed on the next update). There is a [template] included in this plugin, placed in the "assets" folder.
   
 
   
