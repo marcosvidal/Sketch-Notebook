@@ -2,6 +2,7 @@
 
 Easily manage sidebar comments for documenting design.
 
+---
 
 ## Installation
 
@@ -17,8 +18,8 @@ It should look like this:
 Now you can use the plugin from the "Plugins" menu:
 
 ![Plugins menu](assets/readme_images/pluginmenu.png?raw=true "Plugins menu")
-  
-  
+
+
   
 ## Using the plugin
 
