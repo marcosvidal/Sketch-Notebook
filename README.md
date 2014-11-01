@@ -19,7 +19,7 @@ Now you can use the plugin from the "Plugins" menu:
 
 ## Using the plugin
 
-**Remember:** this initial beta release requires to have a page in your document called "--nb--assets" where all assets are stored (this won't be needed on the next update). There is a template included in this plugin, placed in the "assets" folder.
+**Remember:** this initial beta release requires to have a page in your document called "--nb--assets" where all assets are stored (this won't be needed on the next update). There is a [template] included in this plugin, placed in the "assets" folder.
 
 ### Add Comment `ctrl` + `alt` + `⌘` + `9`
 1. Select any layer of your document
@@ -66,3 +66,4 @@ This command is pretty self-explanatory... toggle the visibility of the sidebar 
 
 [Download the plugin]:https://github.com/marcosvidal/Sketch-Notebook/archive/master.zip
 [see example]:assets/readme_images/edit_title.gif?raw=true
+[template]:assets/Notebook%20Assets.sketch
