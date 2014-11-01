@@ -1,0 +1,5 @@
+// Toggle sidebar visibility (ctrl alt cmd 0)
+
+#import 'library/notebook.js'
+
+com.notebook.toggleSidebar();

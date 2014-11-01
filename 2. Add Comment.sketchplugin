@@ -1,0 +1,5 @@
+// Add Comment (ctrl alt cmd 9)
+
+#import 'library/notebook.js'
+
+com.notebook.addComment();

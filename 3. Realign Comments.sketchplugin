@@ -1,0 +1,5 @@
+// Add Comment (ctrl alt cmd 8)
+
+#import 'library/notebook.js'
+
+com.notebook.realignComments();

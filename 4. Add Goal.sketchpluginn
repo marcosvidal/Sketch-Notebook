@@ -1,0 +1,5 @@
+// Add Page Goal (ctrl alt cmd 7)
+
+#import 'library/notebook.js'
+
+com.notebook.generateAssets();
