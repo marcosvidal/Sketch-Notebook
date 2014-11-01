@@ -8,6 +8,11 @@ Download the plugin, unzip the archive, and place the folder contents in your Sk
 
 It should look like this:
 
+![Toggle comments visibility](assets/sketchfolder.png?raw=true "Toggle comments visibility")
+
+Now you can use the plugin from the "Plugins" menu:
+
+![Plugins menu](assets/pluginmenu.png?raw=true "Plugins menu")
 
 ## Using the plugin
 
@@ -15,8 +20,6 @@ It should look like this:
 
 ### Toggle comments visibility `ctrl` + `alt` + `⌘` + `0`
 This command is pretty self-explanatory... toggle the visibility of the sidebar by running it.
-
-![Toggle comments visibility](assets/sketchfolder.png?raw=true "Toggle comments visibility")
 
 ### Add Comment `ctrl` + `alt` + `⌘` + `9`
 Select any layer of your document and run this action, then you'll be asked to type the comment title and detail. That's it.
