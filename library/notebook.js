@@ -643,8 +643,28 @@ com.notebook = {
 
     deleteComment: function(){},
 
+    moveArtboards: function(page,offset){
+        var page = page || doc.currentPage(),
+            offset = offset || 500,
+            cab = page.currentArtboard(),
+            cabName = cab.name(),
+            cabX = cab.frame().x() + cab.frame().width(),
+            cabY = cab.frame().y() + cab.frame().height(),
+            abs = page.artboards().objectEnumerator();
+
+
+        while (a = abs.nextObject()) {
+            var x = a.frame().x(),
+                y = a.frame().y();
+            if (a.name() != cabName && x > cabX && y < cabY) {
+                a.frame().addX(offset)
+            }
+        }
+    },
+
     toggleSidebar: function(){
-        var layers = [[[doc currentPage] currentArtboard] layers],
+        var page = [doc currentPage],
+            layers = [[page currentArtboard] layers],
             sidebar = false,
             artboard = [[doc currentPage] currentArtboard];
         for (var i = 0; i < layers.count(); i++) {
@@ -661,11 +681,13 @@ com.notebook = {
                 visibility = sidebar.isVisible(),
                 sidebarWidth = 500;
             if(visibility==0){
+                this.moveArtboards(page,sidebarWidth);
                 width = artboard.frame().width() + sidebarWidth;
                 artboard.frame().setWidth(width);
                 [sidebar setIsVisible:true];
                 [ballsContainer setIsVisible:true]
             }else{
+                this.moveArtboards(page,-sidebarWidth);
                 [sidebar setIsVisible:false]
                 [ballsContainer setIsVisible:false]
                 width = artboard.frame().width() - sidebarWidth;
