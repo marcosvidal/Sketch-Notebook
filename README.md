@@ -37,7 +37,10 @@ Just edit them as normal layers and then run "realign comments"
 ![Edit comment](assets/readme_images/edit_comment.gif?raw=true "Edit comment")
 
 #### Delete comment
-Select the layout group that contains the comment you want to delete, delete it and the run "realign comments". Again, all comments will be automatically reordered and renumbered.
+1. Select the layout group that contains the comment you want to remove,
+2. delete it and then,
+3. run "realign comments". 
+Again, all comments will be automatically reordered and renumbered.
 
 ![Delete comment](assets/readme_images/delete_comment.gif?raw=true "Delete comment")
 
