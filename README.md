@@ -9,7 +9,7 @@ Easily manage sidebar comments for documenting design.
 3. (Optional) Rename it to "Sketch Notebook"
 4. Place the folder into your Sketch Plugins folder by navigating to Sketch > Plugins > Reveal Plugins Folder…
 
-Now it should look like this:
+It should look like this:
 
 ![Sketch Plugins Folder](assets/readme_images/sketchfolder.png?raw=true "Sketch Plugins Folder")
 
