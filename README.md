@@ -6,12 +6,17 @@ Easily manage sidebar comments for documenting design.
 
 Download the plugin, unzip the archive, and place the folder contents in your Sketch Plugins folder by navigating to Sketch > Plugins > Reveal Plugins Folder…
 
+It should look like this:
+
+
 ## Using the plugin
 
 **Remember:** this initial release requires to have a page in your document called "--nb--assets" where all assets are stored (this won't be needed on the next update). There is a template included in this plugin, placed in the "assets" folder.
 
 ### Toggle comments visibility `ctrl` + `alt` + `⌘` + `0`
 This command is pretty self-explanatory... toggle the visibility of the sidebar by running it.
+
+![Toggle comments visibility](assets/sketchfolder.png?raw=true "Toggle comments visibility")
 
 ### Add Comment `ctrl` + `alt` + `⌘` + `9`
 Select any layer of your document and run this action, then you'll be asked to type the comment title and detail. That's it.
