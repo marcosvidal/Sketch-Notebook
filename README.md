@@ -66,4 +66,4 @@ This command is pretty self-explanatory... toggle the visibility of the sidebar 
 
 [Download the plugin]:https://github.com/marcosvidal/Sketch-Notebook/archive/master.zip
 [see example]:assets/readme_images/edit_title.gif?raw=true
-[template]:assets/Notebook%20Assets.sketch
+[template]:assets/Notebook%20Assets.sketch?raw=true
