@@ -6,11 +6,12 @@ Easily manage sidebar comments for documenting design.
 
 1. [Download the plugin]
 2. Unzip the archive
-3. Place the folder contents into your Sketch Plugins folder by navigating to Sketch > Plugins > Reveal Plugins Folder…
+3. (Optional) Rename it to "Sketch Notebook"
+4. Place the folder into your Sketch Plugins folder by navigating to Sketch > Plugins > Reveal Plugins Folder…
 
-It should look like this:
+Now it should look like this:
 
-![Toggle comments visibility](assets/readme_images/sketchfolder.png?raw=true "Toggle comments visibility")
+![Sketch Plugins Folder](assets/readme_images/sketchfolder.png?raw=true "Sketch Plugins Folder")
 
 Now you can use the plugin from the "Plugins" menu:
 
@@ -53,6 +54,8 @@ Just edit them as normal layers and then run "realign comments"
 Again, all comments will be automatically reordered and renumbered.
 
 ![Delete comment](assets/readme_images/delete_comment.gif?raw=true "Delete comment")
+
+**Title editing: ** If you edit the comment title and it reaches two lines or longer, you'll need to run the command "Realign Comments" twice to set everything in place ([see example]:assets/readme_images/edit_title.png?raw=true). This will be fixed in future releases.
 
 ### Toggle Sidebar Visibility `ctrl` + `alt` + `⌘` + `0`
 This command is pretty self-explanatory... toggle the visibility of the sidebar by running it.
