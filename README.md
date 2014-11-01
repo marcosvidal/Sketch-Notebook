@@ -24,6 +24,8 @@ This command is pretty self-explanatory... toggle the visibility of the sidebar 
 ### Add Comment `ctrl` + `alt` + `⌘` + `9`
 Select any layer of your document and run this action, then you'll be asked to type the comment title and detail. That's it.
 
+![Adding a comment](assets/add_comment.gif?raw=true "Adding a comment")
+
 ### Realign comments `ctrl` + `alt` + `⌘` + `8`
 Run this action anytime to realign or update the comments on the sidebar. Here is a list of things that you can do:
 
