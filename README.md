@@ -8,11 +8,11 @@ Download the plugin, unzip the archive, and place the folder contents in your Sk
 
 It should look like this:
 
-![Toggle comments visibility](assets/sketchfolder.png?raw=true "Toggle comments visibility")
+![Toggle comments visibility](assets/readme_images/sketchfolder.png?raw=true "Toggle comments visibility")
 
 Now you can use the plugin from the "Plugins" menu:
 
-![Plugins menu](assets/pluginmenu.png?raw=true "Plugins menu")
+![Plugins menu](assets/readme_images/pluginmenu.png?raw=true "Plugins menu")
 
 ## Using the plugin
 
@@ -20,11 +20,12 @@ Now you can use the plugin from the "Plugins" menu:
 
 ### Toggle Sidebar Visibility `ctrl` + `alt` + `⌘` + `0`
 This command is pretty self-explanatory... toggle the visibility of the sidebar by running it.
+![Toggle Sidebar Visibility](assets/readme_images/toggle_visibility.gif?raw=true "Toggle Sidebar Visibility")
 
 ### Add Comment `ctrl` + `alt` + `⌘` + `9`
 Select any layer of your document and run this action, then you'll be asked to type the comment title and detail. That's it.
 
-![Adding a comment](assets/add_comment.gif?raw=true "Adding a comment")
+![Adding a comment](assets/readme_images/add_comment.gif?raw=true "Adding a comment")
 
 ### Realign comments `ctrl` + `alt` + `⌘` + `8`
 Run this action anytime to realign or update the comments on the sidebar. Here is a list of things that you can do:
@@ -32,10 +33,16 @@ Run this action anytime to realign or update the comments on the sidebar. Here i
 #### Reorder comments
 Put the comments in the order you want and then run the "realign comments" command. They will automatically reorder and renumber.
 
+![Reorder comment](assets/readme_images/reorder.gif?raw=true "Reorder")
+
 #### Edit comment content
 Just edit them as normal layers and then run "realign comments"
 
+![Edit comment](assets/readme_images/edit_comment.gif?raw=true "Edit comment")
+
 #### Delete comment
-Select the layout group that contains the comment you want to delete. Hit "delete" and the run "realign comments". Again, all comments will be automatically reordered and renumbered.
+Select the layout group that contains the comment you want to delete, delete it and the run "realign comments". Again, all comments will be automatically reordered and renumbered.
+
+![Delete comment](assets/readme_images/delete_comment.gif?raw=true "Delete comment")
 
 ### Customizing the sidebar
