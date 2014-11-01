@@ -15,16 +15,15 @@ It should look like this:
 
 ![Sketch Plugins Folder](assets/readme_images/sketchfolder.png?raw=true "Sketch Plugins Folder")
 
-Now you can use the plugin from the "Plugins" menu:
-
-![Plugins menu](assets/readme_images/pluginmenu.png?raw=true "Plugins menu")
-
+>**Remember:** this initial beta release requires to have a page in your document called "--nb--assets" where all assets are stored (this won't be needed on the next update). There is a [template] included in this plugin, placed in the "assets" folder.
 
   
 ## Using the plugin
 
->**Remember:** this initial beta release requires to have a page in your document called "--nb--assets" where all assets are stored (this won't be needed on the next update). There is a [template] included in this plugin, placed in the "assets" folder.
-  
+Now you can use the plugin from the "Plugins" menu:
+
+![Plugins menu](assets/readme_images/pluginmenu.png?raw=true "Plugins menu")
+
 
   
 ### Add Comment `ctrl` + `alt` + `⌘` + `9`
