@@ -46,7 +46,7 @@ Just edit them as normal layers and then run "realign comments"
 
 ![Edit comment](assets/readme_images/edit_comment.gif?raw=true "Edit comment")
 
-**Title editing: ** If you edit the comment title and it reaches two lines or longer, you'll need to run the command "Realign Comments" twice to set everything in place ([see example]). This will be fixed in future releases.
+**Title editing:** If you edit the comment title and it reaches two lines or longer, you'll need to run the command "Realign Comments" twice to set everything in place ([see example]). This will be fixed in future releases.
 
 #### Delete comment
 1. Select the layout group that contains the comment you want to remove,
