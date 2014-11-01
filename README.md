@@ -4,7 +4,7 @@ Easily manage sidebar comments for documenting design.
 
 ## Installation
 
-1. Download the plugin
+1. [Download the plugin]
 2. Unzip the archive
 3. Place the folder contents into your Sketch Plugins folder by navigating to Sketch > Plugins > Reveal Plugins Folder…
 
@@ -59,3 +59,6 @@ This command is pretty self-explanatory... toggle the visibility of the sidebar 
 ![Toggle Sidebar Visibility](assets/readme_images/toggle_visibility.gif?raw=true "Toggle Sidebar Visibility")
 
 ### Customizing the sidebar
+
+
+[Download the plugin]:https://github.com/marcosvidal/Sketch-Notebook/archive/master.zip
