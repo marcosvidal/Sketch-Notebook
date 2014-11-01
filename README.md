@@ -18,10 +18,6 @@ Now you can use the plugin from the "Plugins" menu:
 
 **Remember:** this initial release requires to have a page in your document called "--nb--assets" where all assets are stored (this won't be needed on the next update). There is a template included in this plugin, placed in the "assets" folder.
 
-### Toggle Sidebar Visibility `ctrl` + `alt` + `⌘` + `0`
-This command is pretty self-explanatory... toggle the visibility of the sidebar by running it.
-![Toggle Sidebar Visibility](assets/readme_images/toggle_visibility.gif?raw=true "Toggle Sidebar Visibility")
-
 ### Add Comment `ctrl` + `alt` + `⌘` + `9`
 Select any layer of your document and run this action, then you'll be asked to type the comment title and detail. That's it.
 
@@ -44,5 +40,9 @@ Just edit them as normal layers and then run "realign comments"
 Select the layout group that contains the comment you want to delete, delete it and the run "realign comments". Again, all comments will be automatically reordered and renumbered.
 
 ![Delete comment](assets/readme_images/delete_comment.gif?raw=true "Delete comment")
+
+### Toggle Sidebar Visibility `ctrl` + `alt` + `⌘` + `0`
+This command is pretty self-explanatory... toggle the visibility of the sidebar by running it.
+![Toggle Sidebar Visibility](assets/readme_images/toggle_visibility.gif?raw=true "Toggle Sidebar Visibility")
 
 ### Customizing the sidebar
