@@ -15,14 +15,14 @@ It should look like this:
 
 ![Sketch Plugins Folder](assets/readme_images/sketchfolder.png?raw=true "Sketch Plugins Folder")
 
->**Remember:** this initial beta release requires to have a page in your document called "--nb--assets" where all assets are stored (this won't be needed on the next update). There is a [template] included in this plugin, placed in the "assets" folder.
-
   
 ## Using the plugin
 
 Now you can use the plugin from the "Plugins" menu:
 
 ![Plugins menu](assets/readme_images/pluginmenu.png?raw=true "Plugins menu")
+
+>**Remember:** this initial beta release requires to have a page in your document called "--nb--assets" where all assets are stored. There is a [template] included in this plugin, placed in the "assets" folder. Sorry for the incovenience.
 
 
   
@@ -37,7 +37,7 @@ That's it.
   
 
   
-### Realign comments `ctrl` + `alt` + `⌘` + `8`
+### Update Comments `ctrl` + `alt` + `⌘` + `8`
 Run this command anytime to update the sidebar. Here is a list of things that you can do:
   
 
@@ -45,7 +45,7 @@ Run this command anytime to update the sidebar. Here is a list of things that yo
 #### Reorder comments
 1. Select the layer group that containts the comment you want to move
 2. Place it wherever you want (the plugin will automatically read the "y" value of that group to order the comments)
-3. Run the "realign comments" command
+3. Run "Update Comments" command (`ctrl` + `alt` + `⌘` + `8`)
 
 They will automatically reorder and renumber.
 
@@ -54,7 +54,8 @@ They will automatically reorder and renumber.
   
   
 #### Edit comment content
-Just edit them as normal layers and then run "realign comments"
+1. Just edit them as normal layers
+2. Run "Update Comments" command (`ctrl` + `alt` + `⌘` + `8`)
 
 ![Edit comment](assets/readme_images/edit_comment.gif?raw=true "Edit comment")
 
@@ -63,9 +64,9 @@ Just edit them as normal layers and then run "realign comments"
   
   
 #### Delete comment
-1. Select the layout group that contains the comment you want to remove,
-2. delete it,
-3. run "realign comments". 
+1. Select the layout group that contains the comment you want to remove
+2. Delete it
+3. Run "Update Comments" command (`ctrl` + `alt` + `⌘` + `8`)
 
 Again, all comments will be automatically reordered and renumbered.
 
@@ -77,6 +78,11 @@ Again, all comments will be automatically reordered and renumbered.
 This command is pretty self-explanatory... toggle the visibility of the sidebar by running it.
 
 ![Toggle Sidebar Visibility](assets/readme_images/toggle_visibility.gif?raw=true "Toggle Sidebar Visibility")
+
+### Relocate Indicators `ctrl` + `alt` + `⌘` + `0`
+Run this command after moving or transforming commented layers to relocate its indicators.
+
+![Relocate Comment Indicators](assets/readme_images/relocate_indicators.gif?raw=true "Relocate Comment Indicators")
   
   
   
