@@ -22,7 +22,7 @@ Now you can use the plugin from the "Plugins" menu:
 
 ![Plugins menu](assets/readme_images/pluginmenu.png?raw=true "Plugins menu")
 
->**Remember:** The first time this plugin runs, it will automatically add a page to store assets. PLease do not touch anything inside that page.
+>**Remember:** The first time this plugin runs, it will automatically add a page to store assets. Please do not touch anything inside that page.
 
 
   
