@@ -72,9 +72,11 @@ com.notebook = {
 
         sidebar.parentGroup().removeLayer(sidebar);
         artboard.addLayer(sidebar);
+
         sidebar.setName("--nb--sidebar");
         sidebar.frame().setX(sX);
         sidebar.frame().setY(0);
+
         this.setSidebarHeight(sidebar);
         this.setSidebarPageName(sidebar);
         sidebar.setIsVisible(false);
@@ -95,12 +97,12 @@ com.notebook = {
 
     setSidebarPageName: function(sidebar){
         var layer = this.getLayerFromSidebar(sidebar,'Page Title'),
-            pageName = doc.currentPage().currentArtboard().name();
+            pageName = sidebar.parentGroup().name();
             this.setStringValue(layer,pageName);
     },
 
     setSidebarHeight: function(sidebar){
-        var artboard = [[doc currentPage] currentArtboard],
+        var artboard = sidebar.parentGroup(),
             height = artboard.frame().height(),
             layers = [sidebar layers];
         for (var i = 0; i < layers.count(); i++) {
@@ -593,13 +595,22 @@ com.notebook = {
     },
 
     addPage: function(name) {
-        // look for existing style sheet, otherwise create a new page with the styles
         var page = doc.addBlankPage(),
             name = name || "New page";
         page.setName(name);
-        doc.setCurrentPage(page);
-        this.refreshPage();
+        //doc.setCurrentPage(page);
+        //this.refreshPage();
         return page;
+    },
+
+    addGroup: function(parent,name){
+        var parent = parent || doc.currentPage(),
+            group = parent.addLayerOfType("group"),
+            name = name || "new group";
+        
+        group.setName(name);
+
+        return group;
     },
 
     addRect: function(parent,name,bg,w,h,x,y){
@@ -607,7 +618,7 @@ com.notebook = {
         var parent = parent || doc.currentPage(),
             name = name || "new layer",
             bg = bg || "#000000",
-            bgColor = [MSColor colorWithHex: bg alpha: 1];
+            bgColor = [MSColor colorWithHex: bg alpha: 1],
             w = w || 400,
             h = h || 400,
             y = y || 0,
@@ -627,24 +638,176 @@ com.notebook = {
 
     },
 
+    addTxt: function(parent,name,color,fontSize,string,w,h,x,y){
+        var parent = parent || doc.currentPage(),
+            name = name || "new text layer",
+            color = color || "#000000",
+            color = [MSColor colorWithHex: color alpha: 1],
+            fontSize = fontSize || 14,
+            string = string || "Type something",
+            w = w || 400,
+            h = h || 24,
+            x = x || 0,
+            y = y || 0;
+
+        var textLayer = parent.addLayerOfType("text");
+
+            textLayer.textColor = color;
+            textLayer.fontSize = fontSize;
+
+            textLayer.setName(name);
+            textLayer.setStringValue(string);
+            
+            var textLayerFrame = [textLayer frame];
+            [textLayerFrame setWidth: w];
+            [textLayerFrame setHeight: h];
+            
+            [textLayerFrame setX: x];
+            [textLayerFrame setY: y];
+
+            textLayer.setFontPostscriptName('Raleway')
+
+        return textLayer;
+    },
+
     generateAssets: function(){
         log("generating assets")
-        var layer = false,
-            assets = this.addPage("--nb--assets");
+        var firstCanvas = doc.currentPage(),
+            firstAB = doc.currentPage().currentArtboard(),
+            sel = selection[0],
+            layer = false,
+            assets = this.addPage("--nb--assets"),
+            sc = {
+                width : 500,
+                height : 480,
+                x : 0,
+                y : 0,
+                margin : this.config.commentVMargin,
+                bg : '#393B36',
+                separatorColor : '#4D4E4A',
+                contentW : (500 - (this.config.commentVMargin*2))
+            };
 
     // Create sidebar
         // group
         var sidebar = assets.addLayerOfType("group");
             sidebar.setName("sidebar");
-            sidebar.frame().setWidth(500);
-            sidebar.frame().setHeight(595);
-            sidebar.frame().setX(0);
-            sidebar.frame().setY(0);
+            sidebar.frame().setWidth(sc.width);
+            sidebar.frame().setHeight(sc.height);
+            sidebar.frame().setX(sc.x);
+            sidebar.frame().setY(sc.y);
         // background
-        var bg = this.addRect(sidebar,'bg','#393B36',500,595,0,0);
-        // bottomLine
+        //            addRect(parent,name,bg,w,h,x,y)
+        var bg = this.addRect(sidebar,'bg', sc.bg, sc.width, sc.height, sc.x, sc.y);
 
-        return layer;
+        // Header
+        var header = sidebar.addLayerOfType("group");
+            header.setName("header");
+            header.frame().setWidth(sc.contentW);
+            header.frame().setHeight(53);
+            header.frame().setX(sc.x);
+            header.frame().setY(sc.y);
+        //              addTxt(parent,name,color,fontSize,w,h,x,y)
+        var logo = this.addTxt(header,'Sketch Notebook','#4C504A',20,'Sketch Notebook',sc.width,24,sc.margin,sc.margin),
+            topLineY = logo.frame().y() + logo.frame().height() + 20,
+            topLine = this.addRect(header,'topLine', sc.separatorColor, sc.contentW, 1, sc.margin, topLineY);
+
+        // Metadata group
+        var m = sidebar.addLayerOfType("group"),
+            mY = topLine.frame().y() + topLine.frame().height() + sc.margin;
+            m.setName("Metadata");
+            m.frame().setWidth(sc.contentW);
+            //m.frame().setHeight(114);
+            m.frame().setX(sc.margin);
+            m.frame().setY(mY);
+
+        m.enableAutomaticScaling();
+        
+        var mInfo = ['PROJECT','DATE','AUTHOR','DEVICE'];
+        // Metadata labels & values
+        var newY = 0;
+        for (var i = 0; i < mInfo.length; i++) {
+            var label = this.addTxt(m,'label_'+mInfo[i],'#61625E',11,mInfo[i]+":",100,11,0,newY+3),
+                value = this.addTxt(m,'value_'+mInfo[i],'#C4C5C3',14,mInfo[i],300,21,80,newY);
+            newY = newY+sc.margin;
+            this.txtRefreshSize(label);
+            this.txtRefreshSize(value);
+        };
+
+        var midLineY = newY + value.frame().height();
+            midLine = this.addRect(m,'midLine', sc.separatorColor, sc.contentW, 1, 0, midLineY);
+
+        // Screen name
+        var sLx = midLine.absoluteRect().x(),
+            sLy = midLine.absoluteRect().y() + midLine.absoluteRect().height() + sc.margin,
+            screenLabel = this.addTxt(sidebar,'label_screen','#61625E',11,"SCREEN",100,11,0,0);
+        
+        screenLabel.absoluteRect().setX(sLx);
+        screenLabel.absoluteRect().setY(sLy);
+        this.txtRefreshSize(screenLabel);
+
+        var sNy = screenLabel.absoluteRect().y() + screenLabel.absoluteRect().height() + 10,
+            screenName = this.addTxt(sidebar,'Page Title','#ffffff',18,"ARTBOARD NAME",300,21,sc.margin,sNy);
+
+        var bottomLineY = screenName.absoluteRect().y() + screenName.absoluteRect().height() + sc.margin,
+            bottomLine = this.addRect(sidebar,'bottomLine', sc.separatorColor, sc.contentW, 1, sc.margin, bottomLineY);
+        
+    // Create comment
+
+        // group
+        var comment = assets.addLayerOfType("group"),
+            cX = sc.margin,
+            cY = bottomLine.absoluteRect().y() + bottomLine.absoluteRect().height() + sc.margin;
+
+        comment.setName("comment");
+        comment.frame().setWidth(sc.contentW);
+        comment.frame().setHeight(48);
+        comment.frame().setX(cX);
+        comment.frame().setY(cY);
+
+        //title
+        var titleY = 5,
+            title = this.addTxt(comment,'title','#ffffff',14,"TITLE",400,16,40,titleY);
+
+        //body
+        var bodyY = title.absoluteRect().y() + title.absoluteRect().height() + 10,
+            body = this.addTxt(comment,'body','#9C9D9B',14,"Comment",400,16,40,bodyY);
+        
+        body.absoluteRect().setY(bodyY);
+
+        // index group
+        var index = comment.addLayerOfType("group");
+            index.setName("index");
+            index.frame().setWidth(40);
+            index.frame().setHeight(40);
+            index.frame().setX(0);
+            index.frame().setY(0);
+
+        // index bg
+        var iBg = this.addRect(index, 'bg', '#55910B', 30, 30, 0, 0);
+        var firstObject = [[iBg layers] firstObject];
+        [firstObject setFixedRadius:15];
+        [firstObject resetPointsBasedOnUserInteraction];
+
+        // index label
+        var iLabel = this.addTxt(index,'#','#ffffff',14,"#",8,16,10,6);
+            iLabel.setTextAlignment(2);
+            iLabel.setFontPostscriptName('Helvetica Neue')
+        this.txtRefreshSize(body);
+
+
+        //center canvas on sidebar
+        var view = [doc currentView];
+        [view zoomToFitRect:[sidebar absoluteRect]]
+        [view actualSize]
+        // return assets page
+
+    
+    doc.setCurrentPage(0);
+    doc.setCurrentPage(doc.pages().count() - 1);
+    doc.setCurrentPage(firstCanvas)
+    doc.currentPage().setCurrentArtboard(firstAB)
+    log("assets generated")
     },
 
     getAssetsPage: function(){
@@ -657,15 +820,19 @@ com.notebook = {
             }
         }
 
-        if(!aPage) aPage = this.generateAssets();
-
         return aPage;
     },
 
     getAsset: function(asset){
         
-        var assetsPage = this.getAssetsPage(),
-            layers = assetsPage.layers();
+        var assetsPage = this.getAssetsPage();
+
+        if(!assetsPage) {
+            this.generateAssets();
+            assetsPage = this.getAssetsPage();
+        }
+
+        var layers = assetsPage.layers();
         
         for (var i = 0; i < layers.count(); i++) {
             var layer = [layers objectAtIndex:i];

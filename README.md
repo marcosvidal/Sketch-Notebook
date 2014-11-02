@@ -22,7 +22,7 @@ Now you can use the plugin from the "Plugins" menu:
 
 ![Plugins menu](assets/readme_images/pluginmenu.png?raw=true "Plugins menu")
 
->**Remember:** this initial beta release requires to have a page in your document called "--nb--assets" where all assets are stored. There is a [template] included in this plugin, placed in the "assets" folder. Sorry for the incovenience.
+>**Remember:** The first time this plugin is run, it will automatically add a page to store assets. PLease do not touch anything inside that page.
 
 
   
