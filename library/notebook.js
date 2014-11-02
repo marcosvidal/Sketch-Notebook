@@ -7,7 +7,13 @@ com.notebook = {
     messages: {
         'alertTitle' : 'Sketch NoteBook',
         'noLayerSelected' : 'Select any layer or group to add a comment',
-        'noSidebar' : 'No comments to show'
+        'noSidebar' : 'No comments to show',
+        'noArtboard' : 'Please select an artboard'
+    },
+
+    config : {
+        commentVMargin : 30,
+        indicatorOffset : 30
     },
 
     alert: function (msg, title) {
@@ -223,7 +229,7 @@ com.notebook = {
             c.setName("####"+commentId+"####"+comment['title']+"####"+el.name());
 
             this.setCommentData(c,comment,sidebar);
-            this.placeCommentIndicator(commentId,c,sidebar,ix,iy);
+            this.placeCommentIndicator(commentId,c,sidebar,ix,iy,el);
             //log("final height: "+this.getCommentsHeight(sidebar))
             this.realignComments();
         }
@@ -244,7 +250,6 @@ com.notebook = {
             for (var i = 0; i < comments.count(); i++) {
                 var comment = [comments objectAtIndex:i],
                     tmpId = (comment.name()).split("####")[1];
-                    log("#############commentid:"+tmpId)
                     if(tmpId>commentId) commentId = tmpId;
             };
         }
@@ -282,8 +287,7 @@ com.notebook = {
         return container;
     },
 
-    placeCommentIndicator: function(commentId,c,sidebar,x,y){
-        log("bringBallsToFront");
+    placeCommentIndicator: function(commentId,c,sidebar,x,y,el){
         var layers = c.layers(),
             ballsContainer = this.getBallsContainer(),
             commentId = commentId || 1; 
@@ -314,12 +318,12 @@ com.notebook = {
     getBottomLinePos: function(sidebar){
 
         var layers = [sidebar layers],
-            pos = 30;
+            pos = this.config.commentVMargin;
 
         for (var i = 0; i < layers.count(); i++) {
             var layer = [layers objectAtIndex:i];
             if(layer.name()=='bottomLine'){
-                var pos = layer.frame().y()+layer.frame().height()+30;
+                var pos = layer.frame().y()+layer.frame().height()+this.config.commentVMargin;
                 return pos;
             }
         };
@@ -341,16 +345,6 @@ com.notebook = {
         return commentsGroup;
     },
 
-    getChildByName: function(o,name){
-        var layers = o.children().objectEnumerator();
-        while (layer = layers.nextObject()) {
-            if(layer.name()==name){
-                return layer;
-            }
-        }
-        return false;
-    },
-
     alignCommentText: function(comment){
         var title = this.getChildByName(comment,"title"),
             body = this.getChildByName(comment,"body");
@@ -369,15 +363,15 @@ com.notebook = {
             comments = this.getCommentsGroup(sidebar).layers(),
             sortedComments = [],
             nextY = 0,
-            gY = this.getBottomLinePos(sidebar) + 30;
-            //log(comments);
+            gY = this.getBottomLinePos(sidebar);
 
         this.checkDeletedComments(comments);
 
         var cG = this.getCommentsGroup(sidebar);
 
         //log(cG.frame().y).setY(gy)
-        log(cG.frame().setY(gY))
+        cG.frame().setY(gY)
+
 
         for (var i = 0; i < comments.count(); i++) {
             var comment = comments.objectAtIndex(i);
@@ -399,6 +393,45 @@ com.notebook = {
                 });
         this.commentRepositioning(sortedComments);
         this.commentRenumbering(sortedComments);
+    },
+
+    getChildByName: function(o,name){
+        var layers = o.children().objectEnumerator(),
+            name = name || "shittyshitlayer";
+        while (layer = layers.nextObject()) {
+            if(layer.name()==name){
+                return layer;
+            }
+        }
+        return;
+    },
+
+    iRelocation: function(){
+        var sidebar = this.getSidebar(),
+            comments = this.getCommentsGroup(sidebar).layers(),
+            ab = doc.currentPage().currentArtboard(),
+            ballsContainer = this.getBallsContainer();
+
+        for (var i = 0; i < comments.count(); i++) {
+            var comment = [comments objectAtIndex:i],
+                commentId = comment.name().split("####")[1]),
+                clname = comment.name().split("####")[3],
+                cl = this.getChildByName(ab,clname),
+                offset = this.config.indicatorOffset,
+                clx = cl.absoluteRect().x() + offset,
+                cly = cl.absoluteRect().y() + offset,
+                ballsContainer = this.getBallsContainer(),
+                indicator = this.getChildByName(ballsContainer,commentId+"####index");
+
+            log("current position: ["+indicator.absoluteRect().x()+","+indicator.absoluteRect().y()+"]")
+            log(" future position: ["+clx+","+cly+"]")
+
+            indicator.absoluteRect().setX(clx);
+            indicator.absoluteRect().setY(cly);
+        };
+
+        
+
     },
 
     checkDeletedComments: function(comments){
@@ -430,7 +463,8 @@ com.notebook = {
 
     commentRepositioning: function(comments){
         var nextY = 0,
-            margin = 30;
+            margin = this.config.commentVMargin;
+
         for (var i = 0; i < comments.length; i++) {
             var comment = comments[i]['el'];
             comment.frame().setY(nextY);
@@ -456,11 +490,13 @@ com.notebook = {
                 label = this.getChildByName(indicator,"#");
                 if(indicator){
                     var ci = comment.el.name().split("####")[1];
+                        //commentedLayer = comment.el.name().split("####")[3];
                     //log("  comment index:"+ci)
                     //log("           ival:"+ival)
                     //log("indicator index:"+(indicator.name()).split('####')[0])
                     //log("     final name: "+ival+"####index")
                   indicator.setName(commentId+"####index")
+                  //this.iRelocation(indicator, commentedLayer)
                 }
                 this.setStringValue(label,ival.toString());
                 this.setStringValue(index,ival.toString());
@@ -656,7 +692,7 @@ com.notebook = {
         while (a = abs.nextObject()) {
             var x = a.frame().x(),
                 y = a.frame().y();
-            if (a.name() != cabName && x > cabX && y < cabY) {
+            if (a.name() != cabName && x > cabX && y <= cabY) {
                 a.frame().addX(offset)
             }
         }
@@ -664,9 +700,18 @@ com.notebook = {
 
     toggleSidebar: function(){
         var page = [doc currentPage],
-            layers = [[page currentArtboard] layers],
+            artboard = [page currentArtboard];
+            if(!artboard){
+                this.showMessage(this.messages['noArtboard']);
+                return;
+            }
+
+        var layers = [artboard layers],
             sidebar = false,
             artboard = [[doc currentPage] currentArtboard];
+
+
+
         for (var i = 0; i < layers.count(); i++) {
             var layer = [layers objectAtIndex:i];
             if(layer.name()=='--nb--sidebar'){
