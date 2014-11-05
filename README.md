@@ -86,7 +86,7 @@ Run this command after moving or transforming commented layers to relocate its i
 
 ## Version history
 
-Sketch Notebook 0.0.1: 30/10/2014 - Initial Release
+- Sketch Notebook 0.0.1: 30/10/2014 - Initial Release
 
 ## Feedback
 
