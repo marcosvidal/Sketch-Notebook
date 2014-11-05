@@ -88,6 +88,12 @@ Run this command after moving or transforming commented layers to relocate its i
 
 - (30/10/2014) v 0.0.1: Initial Release
 
+| Version    | Description       | Release date  |
+| ---------- | ----------------- | ------------- |
+| 0.0.1      | Initial release   | 30/10/2014    |
+
+
+
 ## Feedback
 
 Please keep in mind that this is just an initial release to test how it works in the real world. However, if you found any issue or have any suggestions for improvement of the plugin, please [open an issue].
