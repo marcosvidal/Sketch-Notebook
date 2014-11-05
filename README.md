@@ -86,11 +86,10 @@ Run this command after moving or transforming commented layers to relocate its i
 
 ## Version history
 
---------------------------------------------------
-| Version    | Release date  | Description       |
-| ---------- | ------------- | ----------------- |
-| 0.0.1      | 30/10/2014    | Initial release   |
---------------------------------------------------
+
+| Version    | Release date  | Description            |
+| ---------- | ------------- | ---------------------- |
+| 0.0.1      | 30/10/2014    | Initial beta release   |
 
 
 ## Feedback
