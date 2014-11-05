@@ -79,13 +79,40 @@ This command is pretty self-explanatory... toggle the visibility of the sidebar 
 
 ![Toggle Sidebar Visibility](assets/readme_images/toggle_visibility.gif?raw=true "Toggle Sidebar Visibility")
 
-### Relocate Indicators `ctrl` + `alt` + `⌘` + `0`
+### Relocate Indicators `ctrl` + `alt` + `⌘` + `7`
 Run this command after moving or transforming commented layers to relocate its indicators.
 
 ![Relocate Comment Indicators](assets/readme_images/relocate_indicators.gif?raw=true "Relocate Comment Indicators")
-  
-  
-  
-[Download the plugin]:https://github.com/marcosvidal/Sketch-Notebook/archive/master.zip
-[see example]:assets/readme_images/edit_title.gif?raw=true
-[template]:assets/Notebook%20Assets.sketch?raw=true
+
+## Version history
+
+Sketch Notebook 0.0.1: 30/10/2014 - Initial Release
+
+## Feedback
+
+Please keep in mind that this is just an initial release to test how it works in the real world. However, if you found any issue or have any suggestions for improvement of the plugin, please [open an issue].
+
+
+## License
+
+**The MIT License (MIT)**
+
+Copyright (c) 2014 Marcos Vidal
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
