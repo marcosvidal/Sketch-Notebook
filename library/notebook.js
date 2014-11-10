@@ -1086,6 +1086,6 @@ com.notebook = {
 
     },
 
-    debug : true
+    debug : false
 
  } 
