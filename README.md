@@ -2,7 +2,11 @@
 
 Easily manage sidebar comments for documenting design.
 
-## Installation (using [Sketch Toolbox])
+## Installation
+
+There are two ways to install this plugin:
+
+A) Using the plugin manager [Sketch Toolbox]:
 
 1. [Download Sketch Toolbox]
 2. Unzip the archive and run Sketch Toolbox
@@ -14,7 +18,7 @@ Thats it.
 ![Sketch Toolbox](assets/readme_images/sketchtoolbox.gif?raw=true "Sketch Toolbox")
 
 
-## Manual Installation
+B) Manual installation:
 
 1. [Download the plugin]
 2. Unzip the archive
