@@ -260,13 +260,24 @@ com.notebook = {
 
         if(elementSelected){
 
-            var el = selection[0],
-                alreadyCommented = this.isCommented(el);
+            var el = selection[0];
+
+            var page = [doc currentPage],
+            artboard = [page currentArtboard];
+            if(!artboard){
+                this.showMessage("Please add an artboard to use this plugin");
+                return false;
+            }
+
+
+            var alreadyCommented = this.isCommented(el);
 
             if(alreadyCommented) {
                 this.showMessage("Dude, this layer is already commented...")
                 return;
             }
+
+
 
             
             var panel = this.createAlertBase(),
@@ -1016,7 +1027,7 @@ com.notebook = {
         var page = [doc currentPage],
             artboard = [page currentArtboard];
         if(!artboard){
-            this.showMessage("Please select an artboard");
+            this.showMessage("No comments to align.");
             return false;
         }
 
