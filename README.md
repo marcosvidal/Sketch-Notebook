@@ -71,7 +71,13 @@ They will automatically reorder and renumber.
 Again, all comments will be automatically reordered and renumbered.
 
 ![Delete comment](assets/readme_images/delete_comment.gif?raw=true "Delete comment")
+
+
+#### Relocate Indicators
+1. Move or transform commented layers
+2. Run "Update Comments" command (`ctrl` + `alt` + `⌘` + `8`) to relocate its indicators.
   
+![Relocate Comment Indicators](assets/readme_images/relocate_indicators.gif?raw=true "Relocate Comment Indicators")
 
   
 ### Toggle Sidebar Visibility `ctrl` + `alt` + `⌘` + `0`
@@ -79,17 +85,11 @@ This command is pretty self-explanatory... toggle the visibility of the sidebar 
 
 ![Toggle Sidebar Visibility](assets/readme_images/toggle_visibility.gif?raw=true "Toggle Sidebar Visibility")
 
-### Relocate Indicators `ctrl` + `alt` + `⌘` + `7`
-Run this command after moving or transforming commented layers to relocate its indicators.
-
-![Relocate Comment Indicators](assets/readme_images/relocate_indicators.gif?raw=true "Relocate Comment Indicators")
-
 ## Version history
 
-
-| Version    | Release date  | Description            |
-| ---------- | ------------- | ---------------------- |
-| 0.0.1      | 30/10/2014    | Initial beta release   |
+| Version    | Release date  | Description     |
+| ---------- | ------------- | --------------- |
+| 0.0.1      | 30/10/2014    | Spike release   |
 
 
 ## Feedback
@@ -120,3 +120,10 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+
+
+
+[Download the plugin]:https://github.com/marcosvidal/Sketch-Notebook/archive/master.zip
+[see example]:assets/readme_images/edit_title.png?raw=true
+[open an issue]:https://github.com/marcosvidal/Sketch-Notebook/issues/new
