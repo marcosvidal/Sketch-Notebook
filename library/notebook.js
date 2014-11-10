@@ -77,6 +77,10 @@ com.notebook = {
         
         [error setLaunchPath:"/bin/bash"]
         [error setArguments:["-c", "afplay /System/Library/Sounds/Basso.aiff"]]
+
+        // [error setLaunchPath:"/bin/bash"]
+        // [error setArguments:["-c", 'say -v "Vicki" "dammit"']]
+
         [error launch]
 
         [doc showMessage: msg]; 
@@ -462,6 +466,8 @@ com.notebook = {
 
     realignComments: function(sidebar){
         this.debugLog("realigning comments");
+        var sbExists = this.checkArtboardAndSidebar();
+        if(!sbExists) return;
         var sidebar = sidebar || this.getSidebar(),
             comments = this.getCommentsGroup(sidebar).layers(),
             sortedComments = [],
@@ -1006,16 +1012,34 @@ com.notebook = {
         }
     },
 
-    toggleSidebar: function(){
-        this.debugLog("toggling sidebar")
+    checkArtboardAndSidebar: function(){
         var page = [doc currentPage],
             artboard = [page currentArtboard];
-            if(!artboard){
-                this.showMessage("Please select an artboard");
-                return;
-            }
+        if(!artboard){
+            this.showMessage("Please select an artboard");
+            return false;
+        }
 
-        var layers = [artboard layers],
+        var sidebarExists = this.predicate({key : "(name != NULL) && (name == %@)", match : '--nb--sidebar'}, artboard);
+
+        if (!sidebarExists){
+            this.showMessage("Dude, this page has no comments! Use 'ctrl + alt + ⌘ + 9' to add a new one.");
+            return false;
+        }
+
+        return true;
+
+    },
+
+    toggleSidebar: function(){
+        this.debugLog("toggling sidebar");
+        
+        var sbExists = this.checkArtboardAndSidebar();
+        if(!sbExists) return;
+
+        var page = [doc currentPage],
+            artboard = [page currentArtboard],
+            layers = [artboard layers],
             sidebar = false,
             artboard = [[doc currentPage] currentArtboard];
 
@@ -1051,6 +1075,6 @@ com.notebook = {
 
     },
 
-    debug : false
+    debug : true
 
  } 
