@@ -125,5 +125,5 @@ SOFTWARE.
 
 
 [Download the plugin]:https://github.com/marcosvidal/Sketch-Notebook/archive/master.zip
-[see example]:assets/readme_images/edit_title.png?raw=true
+[see example]:assets/readme_images/edit_title.gif?raw=true
 [open an issue]:https://github.com/marcosvidal/Sketch-Notebook/issues/new
