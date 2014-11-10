@@ -496,6 +496,7 @@ com.notebook = {
                 });
         this.commentRepositioning(sortedComments);
         this.commentRenumbering(sortedComments);
+        this.iRelocation()
     },
 
     iRelocation: function(){
@@ -930,6 +931,50 @@ com.notebook = {
         this.debugLog("assets generated")
     },
 
+
+
+    storeStyle: function(obj, kind){
+        this.debugLog("storing '"+kind+"' styles")
+        var layerTextStyles = [[[doc documentData] layerTextStyles]];
+        var layerStyles = [[[doc documentData] layerStyles]];
+        var layerSymbols = [[[doc documentData] layerSymbols]];
+
+
+        log(layerTextStyles.insertObject());
+
+        // this.debugLog("layerStyles: "+layerStyles);
+
+        // for (var i=0; i < [layerStyles count]; i++){
+        //     this.debugLog([[layerStyles objectAtIndex:i] name]) // MSStyle
+        //     var style = [[layerStyles objectAtIndex:i] style]
+        //     this.debugLog(style) // MSStyle
+        //     this.debugLog(style.fills()) // MSFillStyleCollection
+        //     this.debugLog(style.borders()) // MSBorderStyleCollection
+        //     this.debugLog(style.shadows()) // MSShadowStyleCollection
+        //     this.debugLog(style.innerShadows()) // MSInnerShadowStyleCollection
+        //     this.debugLog(style.blur()) // MSStyleBlur
+        //     this.debugLog(style.reflection()) // MSStyleReflection
+        // }
+
+        // var textStyles = [[[doc documentData] layerTextStyles] objects];
+        // this.debugLog("#### text styles:")
+        // for (var i=0; i < [textStyles count]; i++){
+        //     //this.debugLog([[textStyles objectAtIndex:i] name]) // MSStyle
+        //     var style = [textStyles objectAtIndex:i],
+        //         styleName = [[textStyles objectAtIndex:i] name],
+        //         styleAttrs = style.style().textStyle().attributes();
+        //         this.debugLog('######## ' + styleName + ' attrs:');
+        //         this.debugLog('########' + styleAttrs)
+        //         this.debugLog('########' + style)
+        // }
+
+        // // artboard is your artboard where you want to add the text layer to
+        // var textLayer = artboard.addLayerOfType("text");
+
+        // // apply attributes
+        // textLayer.style().textStyle().setAttributes(textStyle);
+    },
+
     getAsset: function(asset){
         this.debugLog("getting asset")
         var assetsPage = this.predicate({key : "(name != NULL) && (name == %@)", match : "--nb--assets"}, doc);
@@ -1006,6 +1051,6 @@ com.notebook = {
 
     },
 
-    debug : false
+    debug : true
 
  } 

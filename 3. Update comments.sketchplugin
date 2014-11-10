@@ -3,4 +3,3 @@
 #import 'library/notebook.js'
 
 com.notebook.realignComments();
-com.notebook.iRelocation();
