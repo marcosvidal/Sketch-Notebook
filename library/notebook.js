@@ -513,7 +513,20 @@ com.notebook = {
                 });
         this.commentRepositioning(sortedComments);
         this.commentRenumbering(sortedComments);
-        this.iRelocation()
+        this.iRelocation();
+        this.bringToFront();
+    },
+
+    bringToFront: function(){
+        this.debugLog("bringing comments to front");
+        var sidebar = this.getSidebar(),
+            balls = this.getBallsContainer(),
+            artboard = doc.currentPage().currentArtboard();
+
+            sidebar.parentGroup().removeLayer(sidebar);
+            balls.parentGroup().removeLayer(balls);
+            artboard.addLayer(sidebar);
+            artboard.addLayer(balls);
     },
 
     iRelocation: function(){
