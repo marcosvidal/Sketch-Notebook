@@ -941,8 +941,10 @@ com.notebook = {
 
         // index label
         this.debugLog("generating assets: comment index label")
-        var iLabel = this.addTxt(index,'#','#ffffff',14,"#",8,16,10,6);
+                        //function(parent,name,color,fontSize,string,w,h,x,y,fixed){
+        var iLabel = this.addTxt(index,'#','#ffffff',14,"#",29,30,1,0,fixed=true);
             iLabel.setTextAlignment(2);
+            iLabel.setLineSpacing(23);
             iLabel.setFontPostscriptName('Helvetica Neue')
         this.txtRefreshSize(body);
 
@@ -970,7 +972,7 @@ com.notebook = {
         var layerSymbols = [[[doc documentData] layerSymbols]];
 
 
-        log(layerTextStyles.insertObject());
+        //log(layerTextStyles.insertObject());
 
         // this.debugLog("layerStyles: "+layerStyles);
 
