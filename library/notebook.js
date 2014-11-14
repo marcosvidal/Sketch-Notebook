@@ -72,18 +72,17 @@ com.notebook = {
         doc.setCurrentPage(c);
     },
 
+    runCommand: function(cmd,path){
+        var task = [[NSTask alloc] init];    
+        task.setLaunchPath("/bin/bash");
+        task.setArguments(cmd);
+        task.launch();
+    },
+
     showMessage: function(msg){
-        var error = [[NSTask alloc] init]
-        
-        [error setLaunchPath:"/bin/bash"]
-        [error setArguments:["-c", "afplay /System/Library/Sounds/Basso.aiff"]]
-
-        // [error setLaunchPath:"/bin/bash"]
-        // [error setArguments:["-c", 'say -v "Vicki" "dammit"']]
-
-        [error launch]
-
-        [doc showMessage: msg]; 
+        // this.runCommand(['-c', 'say "dammit"']);
+        this.runCommand(['-c', 'afplay /System/Library/Sounds/Basso.aiff']);
+        [doc showMessage: msg];
     },
 
     checkSelection : function(sel){
@@ -163,9 +162,7 @@ com.notebook = {
         var sidebar = sidebar || this.getSidebar(),
             artboard = sidebar.parentGroup(),
             height = artboard.frame().height(),
-            bgLayer = this.predicate({key : "(name != NULL) && (name == %@)",match : "bg"}, sidebar);
-            //bgLayer = [bgLayer objectAtIndex:0];
-
+            bgLayer = this.predicate({key : "(name != NULL) && (name == %@)",match : "sidebar-bg" }, sidebar);
         bgLayer.frame().setHeight(height);
 
     },
@@ -265,7 +262,7 @@ com.notebook = {
             var page = [doc currentPage],
             artboard = [page currentArtboard];
             if(!artboard){
-                this.showMessage("Please add an artboard to use this plugin");
+                this.showMessage("Please add an artboard");
                 return false;
             }
 
@@ -492,7 +489,6 @@ com.notebook = {
         //this.debugLog(cG.frame().y).setY(gy)
         cG.frame().setY(gY)
 
-
         for (var i = 0; i < comments.count(); i++) {
             var comment = comments.objectAtIndex(i);
             this.alignCommentText(comment);
@@ -501,6 +497,7 @@ com.notebook = {
                 "y" : comment.absoluteRect().y()
             });
         };
+
         sortedComments = sortedComments.sort(function (a, b) {
                   if (a.y > b.y) {
                     return 1;
@@ -515,6 +512,7 @@ com.notebook = {
         this.commentRenumbering(sortedComments);
         this.iRelocation();
         this.bringToFront();
+        this.setSidebarHeight(sidebar);
     },
 
     bringToFront: function(){
@@ -837,7 +835,7 @@ com.notebook = {
         // background
         this.debugLog("generating assets: sidebar background")
         //            addRect(parent,name,bg,w,h,x,y)
-        var bg = this.addRect(sidebar,'bg', sc.bg, sc.width, sc.height, sc.x, sc.y);
+        var bg = this.addRect(sidebar,'sidebar-bg', sc.bg, sc.width, sc.height, sc.x, sc.y);
         //this.storeStyle(bg);
 
         // Header
@@ -1042,14 +1040,14 @@ com.notebook = {
         var page = [doc currentPage],
             artboard = [page currentArtboard];
         if(!artboard){
-            this.showMessage("No comments to align.");
+            this.showMessage("No comments to align");
             return false;
         }
 
         var sidebarExists = this.predicate({key : "(name != NULL) && (name == %@)", match : '--nb--sidebar'}, artboard);
 
         if (!sidebarExists){
-            this.showMessage("Dude, this page has no comments! Use 'ctrl + alt + ⌘ + 9' to add a new one.");
+            this.showMessage("Dude, this page has no comments! Use 'ctrl + alt + ⌘ + 9' to add a new one");
             return false;
         }
 
