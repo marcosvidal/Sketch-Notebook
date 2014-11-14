@@ -10,7 +10,7 @@ com.notebook = {
         sidebarWidth : 500,
         sidebarHeight : 480,
         sidebarX : 0,
-        sidebarY : 0
+        sidebarY : 0 
     },
 
     debugLog: function(msg){
@@ -30,7 +30,6 @@ com.notebook = {
         //alert.setIcon(icon);
         alert.addButtonWithTitle('OK');
         alert.addButtonWithTitle('Cancel');
-  
         return alert;
     },
 
@@ -652,7 +651,7 @@ com.notebook = {
                 }
             }
             else if(layerName=='comment body'){
-                this.setStringValue(layer,data['text']);
+                this.setStringValue(layer,data['text'],true);
             }
 
             this.alignCommentText(comment);
@@ -787,11 +786,11 @@ com.notebook = {
 
             textLayer.setName(name);
             textLayer.setNameIsFixed(true);
-            textLayer.setStringValue(string);
+            this.setStringValue(textLayer, string);
             
             var textLayerFrame = [textLayer frame];
             [textLayerFrame setWidth: w];
-            [textLayerFrame setHeight: h];
+            //[textLayerFrame setHeight: h];
             
             [textLayerFrame setX: x];
             [textLayerFrame setY: y];
@@ -800,7 +799,7 @@ com.notebook = {
                 textLayer.setTextBehaviour(1) // BCTextBehaviourFixedWidth
             }
 
-            textLayer.setFontPostscriptName('Raleway')
+            textLayer.setFontPostscriptName('Optima')
 
         return textLayer;
     },
@@ -864,6 +863,8 @@ com.notebook = {
         m.enableAutomaticScaling();
         
         var mInfo = ['PROJECT','DATE','AUTHOR','DEVICE'];
+        var mInfo2 = {
+        };
         // Metadata labels & values
         var newY = 0;
         for (var i = 0; i < mInfo.length; i++) {
@@ -909,14 +910,14 @@ com.notebook = {
 
         //title
         this.debugLog("generating assets: comment title")
-        var titleY = 5,
+        var titleY = 8,
             title = this.addTxt(comment,'comment title','#ffffff',14,"TITLE",400,16,40,titleY,fixed=true);
 
         //body
         this.debugLog("generating assets: comment body")
         var bodyY = title.absoluteRect().y() + title.absoluteRect().height() + 10,
             body = this.addTxt(comment,'comment body','#9C9D9B',14,"Comment",400,16,40,bodyY,fixed=true);
-            body.frame().setWidth(400);
+            //body.frame().setWidth(400);
             //body.setTextWidth(1)
         
         body.absoluteRect().setY(bodyY);
@@ -940,11 +941,10 @@ com.notebook = {
         // index label
         this.debugLog("generating assets: comment index label")
                         //function(parent,name,color,fontSize,string,w,h,x,y,fixed){
-        var iLabel = this.addTxt(index,'#','#ffffff',14,"#",29,30,0,0,fixed=true);
+        var iLabel = this.addTxt(index,'#','#ffffff',14,"#",30,30,0,0,fixed=true);
             iLabel.setTextAlignment(2);
             iLabel.setLineSpacing(23);
-            iLabel.setFontPostscriptName('Helvetica Neue')
-        this.txtRefreshSize(body);
+            //iLabel.setFontPostscriptName('Helvetica Neue');
 
         // center canvas on sidebar
         // var view = [doc currentView];
