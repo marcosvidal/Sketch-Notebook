@@ -61,6 +61,8 @@ com.notebook = {
   
         this.debugLog("############################# obj.treeAsDictionary():")
         this.debugLog(obj.treeAsDictionary())
+
+
     },
 
     refreshPage: function() {
@@ -196,7 +198,8 @@ com.notebook = {
     },
 
     methodsFor: function(obj){
-        this.debugLog([obj class].mocha().instanceMethods())
+        log([obj class].mocha().instanceMethods())
+        log([obj class].mocha().instanceMethodsWithAncestors())
     },
 
     alertHandler: function(alert, responseCode){
@@ -804,6 +807,26 @@ com.notebook = {
         return textLayer;
     },
 
+    getMetadata: function(){
+
+        var name = ([doc displayName]).split('.sketch')[0],
+            author = NSUserName(),
+            objToday = new Date(),
+            day = objToday.getDay(),
+            day = (day > 9) ? day : "0"+day,
+            month = objToday.getMonth(),
+            yr = objToday.getFullYear(),
+            date = day+"/"+month+"/"+yr;
+
+        var meta = {
+            name : name,
+            date : date,
+            author : author
+        };
+
+        return meta;
+    },
+
     generateAssets: function(){
         this.debugLog("generating assets")
         var firstCanvas = doc.currentPage(),
@@ -835,7 +858,7 @@ com.notebook = {
         this.debugLog("generating assets: sidebar background")
         //            addRect(parent,name,bg,w,h,x,y)
         var bg = this.addRect(sidebar,'sidebar-bg', sc.bg, sc.width, sc.height, sc.x, sc.y);
-        //this.storeStyle(bg);
+        this.storeStyle(bg,"sidebar:bg");
 
         // Header
         this.debugLog("generating assets: sidebar header")
@@ -850,6 +873,8 @@ com.notebook = {
             topLineY = logo.frame().y() + logo.frame().height() + 20,
             topLine = this.addRect(header,'bottomLine', sc.separatorColor, sc.contentW, 1, sc.margin, topLineY);
 
+        this.storeSymbol(header,"header");
+
         // Metadata group
         this.debugLog("generating assets: sidebar metadata")
         var m = sidebar.addLayerOfType("group"),
@@ -863,21 +888,50 @@ com.notebook = {
         m.enableAutomaticScaling();
         
         var mInfo = ['PROJECT','DATE','AUTHOR','DEVICE'];
-        var mInfo2 = {
-        };
+
+        var meta = this.getMetadata();
+
+
+
+        var mInfo2 = [
+                        {
+                            "label": "Project",
+                            "value": meta.name,
+                        },
+                        {
+                            "label": "Date",
+                            "value": meta.date,
+                        },
+                        {
+                            "label": "Author",
+                            "value": meta.author,
+                        }
+                     ];
+
         // Metadata labels & values
         var newY = 0;
-        for (var i = 0; i < mInfo.length; i++) {
-            var label = this.addTxt(m,'label_'+mInfo[i],'#61625E',11,mInfo[i]+":",100,11,0,newY+3,fixed=true),
-                value = this.addTxt(m,'value_'+mInfo[i],'#C4C5C3',14,mInfo[i],360,21,80,newY,fixed=true);
+        for (var i = 0; i < mInfo2.length; i++) {
+            var label = this.addTxt(m,'label_'+mInfo2[i].label,'#61625E',12,mInfo2[i].label.toUpperCase()+":",65,11,0,newY+2,fixed=true),
+                value = this.addTxt(m,'value_'+mInfo2[i].value,'#C4C5C3',14,mInfo2[i].value,360,21,80,newY,fixed=true),
+                lid,vid;
             newY = newY+sc.margin;
             this.txtRefreshSize(label);
             this.txtRefreshSize(value);
+            if(i==0){
+                this.storeStyle(label,"metadata:label");
+                lid = label.style().sharedObjectID();
+                this.storeStyle(value,"metadata:value");
+                vid = value.style().sharedObjectID();
+            }else{
+                // label.style().setSharedObjectID(lid);
+                // value.style().setSharedObjectID(vid);
+            }
         };
 
         var midLineY = newY + value.frame().height();
             midLine = this.addRect(m,'bottomLine', sc.separatorColor, sc.contentW, 1, 0, midLineY);
 
+        this.storeSymbol(m,"metadata");
         // Screen name
         this.debugLog("generating assets: sidebar screen name")
         var sLx = midLine.absoluteRect().x(),
@@ -887,9 +941,11 @@ com.notebook = {
         screenLabel.absoluteRect().setX(sLx);
         screenLabel.absoluteRect().setY(sLy);
         this.txtRefreshSize(screenLabel);
+        
 
         var sNy = screenLabel.absoluteRect().y() + screenLabel.absoluteRect().height() + 10,
             screenName = this.addTxt(sidebar,'Page Title','#ffffff',18,"ARTBOARD NAME",300,21,sc.margin,sNy);
+            this.storeStyle(screenName,"sidebar:screen_name");
 
         var bottomLineY = screenName.absoluteRect().y() + screenName.absoluteRect().height() + sc.margin,
             bottomLine = this.addRect(sidebar,'bottomLine', sc.separatorColor, sc.contentW, 1, sc.margin, bottomLineY);
@@ -912,11 +968,13 @@ com.notebook = {
         this.debugLog("generating assets: comment title")
         var titleY = 8,
             title = this.addTxt(comment,'comment title','#ffffff',14,"TITLE",400,16,40,titleY,fixed=true);
+            this.storeStyle(title,"comment:title");
 
         //body
         this.debugLog("generating assets: comment body")
         var bodyY = title.absoluteRect().y() + title.absoluteRect().height() + 10,
             body = this.addTxt(comment,'comment body','#9C9D9B',14,"Comment",400,16,40,bodyY,fixed=true);
+        this.storeStyle(body,"comment:body");
             //body.frame().setWidth(400);
             //body.setTextWidth(1)
         
@@ -937,6 +995,7 @@ com.notebook = {
         var firstObject = [[iBg layers] firstObject];
         [firstObject setFixedRadius:15];
         [firstObject resetPointsBasedOnUserInteraction];
+        this.storeStyle(iBg,"comment:index:bg");
 
         // index label
         this.debugLog("generating assets: comment index label")
@@ -944,6 +1003,7 @@ com.notebook = {
         var iLabel = this.addTxt(index,'#','#ffffff',14,"#",30,30,0,0,fixed=true);
             iLabel.setTextAlignment(2);
             iLabel.setLineSpacing(23);
+            this.storeStyle(iLabel,"comment:index");
             //iLabel.setFontPostscriptName('Helvetica Neue');
 
         // center canvas on sidebar
@@ -961,48 +1021,27 @@ com.notebook = {
         this.debugLog("assets generated")
     },
 
+    storeSymbol: function(obj,name){
+        this.debugLog("storing symbol")
+        var symbols=doc.documentData().layerSymbols();
 
+        //log(symbols.addSharedObjectWithName)
+        // var sharedStyles=doc.documentData().layerStyles();
+        // symbols.addSharedStyleWithName_firstInstance("nbassets:sidebar:bg",bg.style());
+        //dataContainer.sharedStyleWithID(this.orig.style().sharedObjectID())
+    },
 
-    storeStyle: function(obj, kind){
-        this.debugLog("storing '"+kind+"' styles")
-        var layerTextStyles = [[[doc documentData] layerTextStyles]];
-        var layerStyles = [[[doc documentData] layerStyles]];
-        var layerSymbols = [[[doc documentData] layerSymbols]];
+    storeStyle: function(obj,name){
+        this.debugLog("storing styles")
+        var style = style = obj.style();
 
+        if ([obj class] == MSTextLayer) {
+            var sharedStyles=doc.documentData().layerTextStyles();
+        }else{
+            var sharedStyles=doc.documentData().layerStyles();
+        }
+        sharedStyles.addSharedStyleWithName_firstInstance("nb:assets:"+name,style);
 
-        //log(layerTextStyles.insertObject());
-
-        // this.debugLog("layerStyles: "+layerStyles);
-
-        // for (var i=0; i < [layerStyles count]; i++){
-        //     this.debugLog([[layerStyles objectAtIndex:i] name]) // MSStyle
-        //     var style = [[layerStyles objectAtIndex:i] style]
-        //     this.debugLog(style) // MSStyle
-        //     this.debugLog(style.fills()) // MSFillStyleCollection
-        //     this.debugLog(style.borders()) // MSBorderStyleCollection
-        //     this.debugLog(style.shadows()) // MSShadowStyleCollection
-        //     this.debugLog(style.innerShadows()) // MSInnerShadowStyleCollection
-        //     this.debugLog(style.blur()) // MSStyleBlur
-        //     this.debugLog(style.reflection()) // MSStyleReflection
-        // }
-
-        // var textStyles = [[[doc documentData] layerTextStyles] objects];
-        // this.debugLog("#### text styles:")
-        // for (var i=0; i < [textStyles count]; i++){
-        //     //this.debugLog([[textStyles objectAtIndex:i] name]) // MSStyle
-        //     var style = [textStyles objectAtIndex:i],
-        //         styleName = [[textStyles objectAtIndex:i] name],
-        //         styleAttrs = style.style().textStyle().attributes();
-        //         this.debugLog('######## ' + styleName + ' attrs:');
-        //         this.debugLog('########' + styleAttrs)
-        //         this.debugLog('########' + style)
-        // }
-
-        // // artboard is your artboard where you want to add the text layer to
-        // var textLayer = artboard.addLayerOfType("text");
-
-        // // apply attributes
-        // textLayer.style().textStyle().setAttributes(textStyle);
     },
 
     getAsset: function(asset){
