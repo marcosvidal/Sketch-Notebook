@@ -105,7 +105,7 @@ com.notebook = {
             aWidth = artboard.frame().width() + 500;
 
         sidebar.parentGroup().removeLayer(sidebar);
-        artboard.addLayer(sidebar);
+        artboard.addLayers([sidebar]);
 
         sidebar.setName("--nb--sidebar");
         sidebar.frame().setX(sX);
@@ -321,7 +321,7 @@ com.notebook = {
             //this.realignComments();
             var newY = this.getLastCommentPosition();
 
-            commentGroup.addLayer(c);
+            commentGroup.addLayers([c]);
             c.frame().setX(0);
             c.frame().setY(newY);
 
@@ -400,7 +400,7 @@ com.notebook = {
             layer = this.predicate({key : "(name != NULL) && (name == %@)",match : "index"}, c),
             indicator = this.cloneLayer(layer);
 
-        ballsContainer.addLayer(indicator);
+        ballsContainer.addLayers([indicator]);
         indicator.absoluteRect().setX(x+30);
         indicator.absoluteRect().setY(y+30);
         indicator.setName(commentId+"####"+indicator.name())
@@ -476,6 +476,7 @@ com.notebook = {
 
     realignComments: function(sidebar){
         this.debugLog("realigning comments");
+
         var sbExists = this.checkArtboardAndSidebar();
         if(!sbExists) return;
         var sidebar = sidebar || this.getSidebar(),
@@ -510,6 +511,7 @@ com.notebook = {
                   // a must be equal to b
                   return 0;
                 });
+
         this.commentRepositioning(sortedComments);
         this.commentRenumbering(sortedComments);
         this.iRelocation();
@@ -525,8 +527,8 @@ com.notebook = {
 
             sidebar.parentGroup().removeLayer(sidebar);
             balls.parentGroup().removeLayer(balls);
-            artboard.addLayer(sidebar);
-            artboard.addLayer(balls);
+            artboard.addLayers([sidebar]);
+            artboard.addLayers([balls]);
     },
 
     iRelocation: function(){
@@ -537,6 +539,8 @@ com.notebook = {
             ballsContainer = this.getBallsContainer();
 
         for (var i = 0; i < comments.count(); i++) {
+            var tmp = [comments objectAtIndex:i];
+
             var comment = [comments objectAtIndex:i],
                 commentId = comment.name().split("####")[1]),
                 clID = comment.name().split("####")[3],
@@ -549,8 +553,8 @@ com.notebook = {
                 ballsContainer = this.getBallsContainer(),
                 indicator = this.predicate({key : "(name != NULL) && (name == %@)",match : commentId+'####index'}, ballsContainer);
 
-            this.debugLog("current position: ["+indicator.absoluteRect().x()+","+indicator.absoluteRect().y()+"]")
-            this.debugLog(" future position: ["+clx+","+cly+"]")
+            // this.debugLog("current position: ["+indicator.absoluteRect().x()+","+indicator.absoluteRect().y()+"]")
+            // this.debugLog(" future position: ["+clx+","+cly+"]")
 
             indicator.absoluteRect().setX(clx);
             indicator.absoluteRect().setY(cly);
@@ -561,7 +565,6 @@ com.notebook = {
     },
 
     checkDeletedComments: function(comments){
-        this.debugLog("checking for deleted comments")
         var commentsIds = [],
             index,
             ballsContainer = this.getBallsContainer(),
@@ -577,7 +580,6 @@ com.notebook = {
             var indicator = [balls objectAtIndex:i],
                 index = (indicator.name()).split("####"),
                 index = index[0];
-                //this.debugLog(commentsIds.indexOf(index))
             if(commentsIds.indexOf(index)==-1) {
                 indicator.parentGroup().removeLayer(indicator);
                 if(this.flags.deletedComments==false) this.flags.deletedComments = 0;
@@ -618,16 +620,12 @@ com.notebook = {
                 label = this.predicate({key : "(name != NULL) && (name == %@)",match : '#'}, indicator);
                 if(indicator){
                     var ci = comment.el.name().split("####")[1];
-                        //commentedLayer = comment.el.name().split("####")[3];
-                    //this.debugLog("  comment index:"+ci)
-                    //this.debugLog("           ival:"+ival)
-                    //this.debugLog("indicator index:"+(indicator.name()).split('####')[0])
-                    //this.debugLog("     final name: "+ival+"####index")
-                  indicator.setName(commentId+"####index")
-                  //this.iRelocation(indicator, commentedLayer)
+                    indicator.setName(commentId+"####index")
                 }
+
                 this.setStringValue(label,ival.toString());
                 this.setStringValue(index,ival.toString());
+
         };
     },
 
@@ -679,6 +677,8 @@ com.notebook = {
         this.debugLog("refreshing text size: "+layer)
         if(fit) [layer adjustFrameToFit]
         [layer select:true byExpandingSelection:false];
+        [layer setIsEditingText:true]
+        [layer setIsEditingText:false]
         [layer select:false byExpandingSelection:false];
     },
 
@@ -742,23 +742,52 @@ com.notebook = {
         return group;
     },
 
+    addOval: function(parent,name,bg,w,h,x,y){
+        var parent = parent || doc.currentPage(),
+            name = name || "new oval layer",
+            bg = bg || "#000000",
+            //bg = MSColor.colorWithSVGString(bg),
+            //bgColor = [MSColor colorWithHex: bg alpha: 1],
+            w = w || 400,
+            h = h || 400,
+            y = y || 0,
+            x = x || 0;
+
+        var ovalShape = MSOvalShape.alloc().init();
+        ovalShape.frame = MSRect.rectWithRect(NSMakeRect(x,y,w,h));
+
+        var shapeGroup=ovalShape.embedInShapeGroup();
+        var fill = shapeGroup.style().fills().addNewStylePart();
+        fill.color = MSColor.colorWithSVGString(bg);
+
+        parent.addLayers([shapeGroup])
+
+        return shapeGroup;
+    },
+
     addRect: function(parent,name,bg,w,h,x,y){
         this.debugLog("adding rect layer")
         var parent = parent || doc.currentPage(),
-            name = name || "new layer",
+            name = name || "new rect layer",
             bg = bg || "#000000",
-            bgColor = [MSColor colorWithHex: bg alpha: 1],
+            //bg = MSColor.colorWithSVGString(bg),
+            //bgColor = [MSColor colorWithHex: bg alpha: 1],
             w = w || 400,
             h = h || 400,
             y = y || 0,
             x = x || 0;
 
         var rect = parent.addLayerOfType("rectangle");
+            rect = rect.embedInShapeGroup();
+
+        var fill = rect.style().fills().addNewStylePart();
+            fill.color = MSColor.colorWithSVGString(bg);
+
             rect.setName(name);
             rect.setNameIsFixed(true)
-            rect.style().fills().addNewStylePart();
-            rect.style().fill().setFillType(0);
-            rect.style().fill().setColor(bgColor);
+            // rect.style().fills().addNewStylePart();
+            // rect.style().fill().setFillType(0);
+            // rect.style().fill().setColor(bgColor);
             rect.frame().setWidth(w);
             rect.frame().setHeight(h);
             rect.frame().setX(x);
@@ -773,7 +802,8 @@ com.notebook = {
         var parent = parent || doc.currentPage(),
             name = name || "new text layer",
             color = color || "#000000",
-            color = [MSColor colorWithHex: color alpha: 1],
+            // color = [MSColor colorWithHex: color alpha: 1],
+            color = MSColor.colorWithSVGString(color),
             fontSize = fontSize || 14,
             string = string || "Type something",
             w = w || 400,
@@ -966,7 +996,7 @@ com.notebook = {
 
         //title
         this.debugLog("generating assets: comment title")
-        var titleY = 8,
+        var titleY = 7,
             title = this.addTxt(comment,'comment title','#ffffff',14,"TITLE",400,16,40,titleY,fixed=true);
             this.storeStyle(title,"comment:title");
 
@@ -991,10 +1021,10 @@ com.notebook = {
 
         // index bg
         this.debugLog("generating assets: comment index bg")
-        var iBg = this.addRect(index, 'bg', '#55910B', 30, 30, 0, 0);
-        var firstObject = [[iBg layers] firstObject];
-        [firstObject setFixedRadius:15];
-        [firstObject resetPointsBasedOnUserInteraction];
+        var iBg = this.addOval(index, 'bg', '#55910B', 30, 30, 0, 0);
+        // var firstObject = [[iBg layers] firstObject];
+        // [firstObject setFixedRadius:15];
+        // [firstObject resetPointsBasedOnUserInteraction];
         this.storeStyle(iBg,"comment:index:bg");
 
         // index label
