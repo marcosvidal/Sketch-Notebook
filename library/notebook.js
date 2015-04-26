@@ -10,7 +10,7 @@ com.notebook = {
         sidebarWidth : 500,
         sidebarHeight : 480,
         sidebarX : 0,
-        sidebarY : 0 
+        sidebarY : 0
     },
 
     debugLog: function(msg){
@@ -38,27 +38,27 @@ com.notebook = {
         this.debugLog("## Dumping object " + obj )
         this.debugLog("## obj class is: " + [obj className])
         this.debugLog("#####################################################################################")
-  
+
         this.debugLog("############################# obj.properties:")
         this.debugLog([obj class].mocha().properties())
         this.debugLog("############################# obj.propertiesWithAncestors:")
         this.debugLog([obj class].mocha().propertiesWithAncestors())
-  
+
         this.debugLog("############################# obj.classMethods:")
         this.debugLog([obj class].mocha().classMethods())
         this.debugLog("############################# obj.classMethodsWithAncestors:")
         this.debugLog([obj class].mocha().classMethodsWithAncestors())
-  
+
         this.debugLog("############################# obj.instanceMethods:")
         this.debugLog([obj class].mocha().instanceMethods())
         this.debugLog("############################# obj.instanceMethodsWithAncestors:")
         this.debugLog([obj class].mocha().instanceMethodsWithAncestors())
-  
+
         this.debugLog("############################# obj.protocols:")
         this.debugLog([obj class].mocha().protocols())
         this.debugLog("############################# obj.protocolsWithAncestors:")
         this.debugLog([obj class].mocha().protocolsWithAncestors())
-  
+
         this.debugLog("############################# obj.treeAsDictionary():")
         this.debugLog(obj.treeAsDictionary())
 
@@ -74,7 +74,7 @@ com.notebook = {
     },
 
     runCommand: function(cmd,path){
-        var task = [[NSTask alloc] init];    
+        var task = [[NSTask alloc] init];
         task.setLaunchPath("/bin/bash");
         task.setArguments(cmd);
         task.launch();
@@ -154,7 +154,7 @@ com.notebook = {
         var sidebar = sidebar || this.getSidebar,
             layer = this.predicate({key : "(name != NULL) && (name == %@)",match : "Page Title"}, sidebar),
             pageName = sidebar.parentGroup().name();
-        
+
         this.setStringValue(layer,pageName);
     },
 
@@ -194,7 +194,7 @@ com.notebook = {
             return sidebarWidth;
         };
         return nil;
-        
+
     },
 
     methodsFor: function(obj){
@@ -278,9 +278,9 @@ com.notebook = {
 
 
 
-            
+
             var panel = this.createAlertBase(),
-                comment;            
+                comment;
 
             panel.setMessageText("Sketch Notebook");
             panel.setInformativeText("Set comment title and content for \""+el.name()+"\"");
@@ -299,7 +299,7 @@ com.notebook = {
                     'text' : (panel.viewAtIndex(3).stringValue()),
                     'title' : panel.viewAtIndex(1).stringValue()
                 };
-                
+
             }else{
                 comment = false;
                 this.showMessage("Cancelled");
@@ -334,7 +334,7 @@ com.notebook = {
             this.debugLog("final height: "+this.getCommentsHeight(sidebar))
             this.realignComments();
         }
-        
+
     },
 
     flags: {
@@ -560,7 +560,7 @@ com.notebook = {
             indicator.absoluteRect().setY(cly);
         };
 
-        
+
 
     },
 
@@ -602,7 +602,7 @@ com.notebook = {
             // [layer select:true byExpandingSelection:false];
             // [layer select:false byExpandingSelection:false];
         };
-        
+
     },
 
     commentRenumbering: function(comments){
@@ -735,7 +735,7 @@ com.notebook = {
         var parent = parent || doc.currentPage(),
             group = parent.addLayerOfType("group"),
             name = name || "new group";
-        
+
         group.setName(name);
         group.setNameIsFixed(true)
 
@@ -756,7 +756,7 @@ com.notebook = {
         var ovalShape = MSOvalShape.alloc().init();
         ovalShape.frame = MSRect.rectWithRect(NSMakeRect(x,y,w,h));
 
-        var shapeGroup=ovalShape.embedInShapeGroup();
+        var shapeGroup = [MSShapeGroup shapeWithPath:ovalShape];
         var fill = shapeGroup.style().fills().addNewStylePart();
         fill.color = MSColor.colorWithSVGString(bg);
 
@@ -778,7 +778,6 @@ com.notebook = {
             x = x || 0;
 
         var rect = parent.addLayerOfType("rectangle");
-            rect = rect.embedInShapeGroup();
 
         var fill = rect.style().fills().addNewStylePart();
             fill.color = MSColor.colorWithSVGString(bg);
@@ -820,11 +819,11 @@ com.notebook = {
             textLayer.setName(name);
             textLayer.setNameIsFixed(true);
             this.setStringValue(textLayer, string);
-            
+
             var textLayerFrame = [textLayer frame];
             [textLayerFrame setWidth: w];
             //[textLayerFrame setHeight: h];
-            
+
             [textLayerFrame setX: x];
             [textLayerFrame setY: y];
 
@@ -916,7 +915,7 @@ com.notebook = {
             m.frame().setY(mY);
 
         m.enableAutomaticScaling();
-        
+
         var mInfo = ['PROJECT','DATE','AUTHOR','DEVICE'];
 
         var meta = this.getMetadata();
@@ -967,11 +966,11 @@ com.notebook = {
         var sLx = midLine.absoluteRect().x(),
             sLy = midLine.absoluteRect().y() + midLine.absoluteRect().height() + sc.margin,
             screenLabel = this.addTxt(sidebar,'label_screen','#61625E',11,"SCREEN",100,11,0,0);
-        
+
         screenLabel.absoluteRect().setX(sLx);
         screenLabel.absoluteRect().setY(sLy);
         this.txtRefreshSize(screenLabel);
-        
+
 
         var sNy = screenLabel.absoluteRect().y() + screenLabel.absoluteRect().height() + 10,
             screenName = this.addTxt(sidebar,'Page Title','#ffffff',18,"ARTBOARD NAME",300,21,sc.margin,sNy);
@@ -979,8 +978,8 @@ com.notebook = {
 
         var bottomLineY = screenName.absoluteRect().y() + screenName.absoluteRect().height() + sc.margin,
             bottomLine = this.addRect(sidebar,'bottomLine', sc.separatorColor, sc.contentW, 1, sc.margin, bottomLineY);
-        
-    
+
+
     // Create comment
         // group
         this.debugLog("generating assets: comment")
@@ -1007,7 +1006,7 @@ com.notebook = {
         this.storeStyle(body,"comment:body");
             //body.frame().setWidth(400);
             //body.setTextWidth(1)
-        
+
         body.absoluteRect().setY(bodyY);
 
         // index group
@@ -1126,7 +1125,7 @@ com.notebook = {
 
     toggleSidebar: function(){
         this.debugLog("toggling sidebar");
-        
+
         var sbExists = this.checkArtboardAndSidebar();
         if(!sbExists) return;
 
@@ -1170,4 +1169,4 @@ com.notebook = {
 
     debug : false
 
- } 
+ }
