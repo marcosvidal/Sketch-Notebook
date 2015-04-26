@@ -757,6 +757,7 @@ com.notebook = {
         ovalShape.frame = MSRect.rectWithRect(NSMakeRect(x,y,w,h));
 
         var shapeGroup=ovalShape.embedInShapeGroup();
+        var shapeGroup = [MSShapeGroup shapeWithPath:ovalShape];
         var fill = shapeGroup.style().fills().addNewStylePart();
         fill.color = MSColor.colorWithSVGString(bg);
 
@@ -778,7 +779,6 @@ com.notebook = {
             x = x || 0;
 
         var rect = parent.addLayerOfType("rectangle");
-            rect = rect.embedInShapeGroup();
 
         var fill = rect.style().fills().addNewStylePart();
             fill.color = MSColor.colorWithSVGString(bg);
