@@ -753,10 +753,8 @@ com.notebook = {
             y = y || 0,
             x = x || 0;
 
-        var ovalShape = MSOvalShape.alloc().init();
-        ovalShape.frame = MSRect.rectWithRect(NSMakeRect(x,y,w,h));
-
-        var shapeGroup=ovalShape.embedInShapeGroup();
+        var ovalShape = MSOvalShape.alloc().initWithFrame(NSMakeRect(x,y,w,h));
+        var shapeGroup = MSShapeGroup.shapeWithPath(ovalShape)
         var fill = shapeGroup.style().fills().addNewStylePart();
         fill.color = MSColor.colorWithSVGString(bg);
 
@@ -778,7 +776,6 @@ com.notebook = {
             x = x || 0;
 
         var rect = parent.addLayerOfType("rectangle");
-            rect = rect.embedInShapeGroup();
 
         var fill = rect.style().fills().addNewStylePart();
             fill.color = MSColor.colorWithSVGString(bg);
@@ -1038,7 +1035,7 @@ com.notebook = {
 
         // center canvas on sidebar
         // var view = [doc currentView];
-        // [view zoomToFitRect:[sidebar absoluteRect]]
+        // [view zoomToFitRect:[sidebar rect]]
         // [view actualSize]
         // return assets page
 
@@ -1063,7 +1060,7 @@ com.notebook = {
 
     storeStyle: function(obj,name){
         this.debugLog("storing styles")
-        var style = style = obj.style();
+        var style = obj.style();
 
         if ([obj class] == MSTextLayer) {
             var sharedStyles=doc.documentData().layerTextStyles();
