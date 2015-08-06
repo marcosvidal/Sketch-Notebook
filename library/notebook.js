@@ -1133,12 +1133,11 @@ com.notebook = {
             sidebar = false,
             artboard = [[doc currentPage] currentArtboard];
 
-
-
-        for (var i = 0; i < layers.count(); i++) {
+        for (var i = 0, l = layers.count(); i < l; i++) {
             var layer = [layers objectAtIndex:i];
             if(layer.name()=='--nb--sidebar'){
                 sidebar = layer;
+                break;
             }
         };
         if(!sidebar) {
