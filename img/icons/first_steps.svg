@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="25px" height="18px" viewBox="0 0 25 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <!-- Generator: Sketch 3.1.1 (8761) - http://www.bohemiancoding.com/sketch -->
+    <title>first_steps</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Landing" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Notebook-home" sketch:type="MSArtboardGroup" transform="translate(-129.000000, -1266.000000)" fill="#9A9A9A">
+            <g id="features" sketch:type="MSLayerGroup" transform="translate(-3.000000, 996.000000)">
+                <g id="text" transform="translate(132.000000, 266.000000)" sketch:type="MSShapeGroup">
+                    <path d="M3.5,18.4 L1.75,18.4 C0.77,18.4 0,19.192 0,20.2 C0,21.136 0.77,22 1.75,22 L3.5,22 C4.48,22 5.25,21.136 5.25,20.2 C5.25,19.192 4.48,18.4 3.5,18.4 L3.5,18.4 Z M3.5,11.2 L1.75,11.2 C0.77,11.2 0,11.992 0,13 C0,13.936 0.77,14.8 1.75,14.8 L3.5,14.8 C4.48,14.8 5.25,13.936 5.25,13 C5.25,11.992 4.48,11.2 3.5,11.2 L3.5,11.2 Z M3.5,4 L1.75,4 C0.77,4 0,4.792 0,5.8 C0,6.736 0.77,7.6 1.75,7.6 L3.5,7.6 C4.48,7.6 5.25,6.736 5.25,5.8 C5.25,4.792 4.48,4 3.5,4 L3.5,4 Z M10.5,7.6 L22.75,7.6 C23.73,7.6 24.5,6.736 24.5,5.8 C24.5,4.792 23.73,4 22.75,4 L10.5,4 C9.52,4 8.75,4.792 8.75,5.8 C8.75,6.736 9.52,7.6 10.5,7.6 L10.5,7.6 Z M22.75,11.2 L10.5,11.2 C9.52,11.2 8.75,11.992 8.75,13 C8.75,13.936 9.52,14.8 10.5,14.8 L22.75,14.8 C23.73,14.8 24.5,13.936 24.5,13 C24.5,11.992 23.73,11.2 22.75,11.2 L22.75,11.2 Z M22.75,18.4 L10.5,18.4 C9.52,18.4 8.75,19.192 8.75,20.2 C8.75,21.136 9.52,22 10.5,22 L22.75,22 C23.73,22 24.5,21.136 24.5,20.2 C24.5,19.192 23.73,18.4 22.75,18.4 L22.75,18.4 Z" id="first_steps"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
