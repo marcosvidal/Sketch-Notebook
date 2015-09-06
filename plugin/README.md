@@ -2,32 +2,10 @@
 
 Easily manage sidebar comments for documenting design.
 
-## Installation
+## Download & Installation
 
-There are two ways to install this plugin:
-
-**A) Using the plugin manager [Sketch Toolbox]:**
-
-1. [Download Sketch Toolbox]
-2. Unzip the archive and run Sketch Toolbox
-3. Type "Notebook" into the search input or navigate through the list until you find it
-4. Click "Install"
-
-Thats it.
-
-![Sketch Toolbox](assets/readme_images/sketchtoolbox.gif?raw=true "Sketch Toolbox")
-
-
-**B) Manual installation:**
-
-1. [Download the plugin]
-2. Unzip the archive
-3. (Optional) Rename it to "Sketch Notebook"
-4. Place the folder into your Sketch Plugins folder by navigating to Sketch > Plugins > Reveal Plugins Folder…
-
-It should look like this:
-
-![Sketch Plugins Folder](assets/readme_images/sketchfolder.png?raw=true "Sketch Plugins Folder")
+1. Download the plugin from http://marcosvid.al/sketch-notebook 
+2. Place the folder into your Sketch Plugins folder by navigating to Sketch > Plugins > Reveal Plugins Folder…
 
   
 ## Using the plugin
@@ -137,8 +115,7 @@ SOFTWARE.
 
 
 
-
-[Download the plugin]:https://github.com/marcosvidal/Sketch-Notebook/archive/master.zip
+[http://marcosvid.al/sketch-notebook]:http://marcosvid.al/sketch-notebook
 [see example]:assets/readme_images/edit_title.gif?raw=true
 [open an issue]:https://github.com/marcosvidal/Sketch-Notebook/issues/new
 [Sketch Toolbox]:http://www.sketchtoolbox.com
