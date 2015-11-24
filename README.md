@@ -73,7 +73,7 @@ Again, all comments will be automatically reordered and renumbered.
   
 ![Relocate Comment Indicators](assets/readme_images/relocate_indicators.gif?raw=true "Relocate Comment Indicators")
 
-#### Relocate Indicators Manually
+### Relocate Indicators Manually
 Check Notebook Pro from http://marcosvid.al/sketch-notebook
   
 ### Toggle Sidebar Visibility `ctrl` + `alt` + `⌘` + `0`
@@ -81,13 +81,13 @@ This command is pretty self-explanatory... toggle the visibility of the sidebar 
 
 ![Toggle Sidebar Visibility](assets/readme_images/toggle_visibility.gif?raw=true "Toggle Sidebar Visibility")
 
-#### Batch Sidebar Visibility
+### Batch Sidebar Visibility
 Check Notebook Pro at http://marcosvid.al/sketch-notebook
 
-#### Update Metadata
+### Update Metadata
 Check Notebook Pro at http://marcosvid.al/sketch-notebook
 
-#### Customizable Sidebar
+### Customizable Sidebar
 Check Notebook Pro at http://marcosvid.al/sketch-notebook
 
 ## Version history
