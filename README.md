@@ -1,3 +1,5 @@
+>**New version available:** Download Notebook Pro from http://marcosvid.al/sketch-notebook
+
 # Sketch Notebook
 
 Easily manage sidebar comments for documenting design.
@@ -10,7 +12,7 @@ Easily manage sidebar comments for documenting design.
   
 ## Using the plugin
 
-Now you can use the plugin from the "Plugins" menu:
+Now you can use the plugin from the "Plugins" menu: 
 
 ![Plugins menu](assets/readme_images/pluginmenu.png?raw=true "Plugins menu")
 
