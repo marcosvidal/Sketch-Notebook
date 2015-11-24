@@ -1,17 +1,17 @@
-//#import 'Notebook/library/sandbox-sketch-utils.js'
-
 var com = {};
 
 com.notebook = {
 
     config : {
         commentVMargin : 30,
-        indicatorOffset : 30,
+        indicatorOffset : 0,
         sidebarWidth : 500,
         sidebarHeight : 480,
         sidebarX : 0,
         sidebarY : 0 
     },
+
+    ctx : {},
 
     debugLog: function(msg){
         if(this.debug) log(msg);
@@ -26,48 +26,48 @@ com.notebook = {
     createAlertBase: function () {
         this.debugLog("creating alertbase");
         var alert = COSAlertWindow.new();
-        //var icon = NSImage.alloc().initByReferencingFile(pluginPath + '/lib/' + service + '.icns');
-        //alert.setIcon(icon);
+        // var icon = NSImage.alloc().initByReferencingFile('../Resources/icon.png');
+        // alert.setIcon(icon);
         alert.addButtonWithTitle('OK');
         alert.addButtonWithTitle('Cancel');
         return alert;
     },
 
-    dump_obj: function(obj){
-        this.debugLog("#####################################################################################")
-        this.debugLog("## Dumping object " + obj )
-        this.debugLog("## obj class is: " + [obj className])
-        this.debugLog("#####################################################################################")
+    dumpObj: function(obj){
+        log("#####################################################################################")
+        log("## Dumping object " + obj )
+        log("## obj class is: " + [obj className])
+        log("#####################################################################################")
   
-        this.debugLog("############################# obj.properties:")
-        this.debugLog([obj class].mocha().properties())
-        this.debugLog("############################# obj.propertiesWithAncestors:")
-        this.debugLog([obj class].mocha().propertiesWithAncestors())
+        log("############################# obj.properties:")
+        log([obj class].mocha().properties())
+        log("############################# obj.propertiesWithAncestors:")
+        log([obj class].mocha().propertiesWithAncestors())
   
-        this.debugLog("############################# obj.classMethods:")
-        this.debugLog([obj class].mocha().classMethods())
-        this.debugLog("############################# obj.classMethodsWithAncestors:")
-        this.debugLog([obj class].mocha().classMethodsWithAncestors())
+        log("############################# obj.classMethods:")
+        log([obj class].mocha().classMethods())
+        log("############################# obj.classMethodsWithAncestors:")
+        log([obj class].mocha().classMethodsWithAncestors())
   
-        this.debugLog("############################# obj.instanceMethods:")
-        this.debugLog([obj class].mocha().instanceMethods())
-        this.debugLog("############################# obj.instanceMethodsWithAncestors:")
-        this.debugLog([obj class].mocha().instanceMethodsWithAncestors())
+        log("############################# obj.instanceMethods:")
+        log([obj class].mocha().instanceMethods())
+        log("############################# obj.instanceMethodsWithAncestors:")
+        log([obj class].mocha().instanceMethodsWithAncestors())
   
-        this.debugLog("############################# obj.protocols:")
-        this.debugLog([obj class].mocha().protocols())
-        this.debugLog("############################# obj.protocolsWithAncestors:")
-        this.debugLog([obj class].mocha().protocolsWithAncestors())
+        log("############################# obj.protocols:")
+        log([obj class].mocha().protocols())
+        log("############################# obj.protocolsWithAncestors:")
+        log([obj class].mocha().protocolsWithAncestors())
   
-        this.debugLog("############################# obj.treeAsDictionary():")
-        this.debugLog(obj.treeAsDictionary())
-
+        log("############################# obj.treeAsDictionary():")
+        log(obj.treeAsDictionary())
 
     },
 
     refreshPage: function() {
         this.debugLog("refreshing page")
-        var c = doc.currentPage();
+        var doc = this.ctx.document,
+            c = doc.currentPage();
         doc.setCurrentPage(0);
         doc.setCurrentPage(doc.pages().count() - 1);
         doc.setCurrentPage(c);
@@ -83,6 +83,7 @@ com.notebook = {
     showMessage: function(msg){
         // this.runCommand(['-c', 'say "dammit"']);
         this.runCommand(['-c', 'afplay /System/Library/Sounds/Basso.aiff']);
+        var doc = this.ctx.document;
         [doc showMessage: msg];
     },
 
@@ -96,13 +97,19 @@ com.notebook = {
         }
     },
 
+    settings: function(){
+
+    },
+
     addSidebar : function(){
         this.debugLog("adding sidebar")
-        var artboard = [[doc currentPage] currentArtboard],
+        var selection = this.ctx.selection,
+            doc = this.ctx.document,
+            artboard = [[doc currentPage] currentArtboard],
             sidebar = this.getAsset('sidebar').duplicate(),
             sX = artboard.frame().width(),
             sHeight = artboard.frame().height(),
-            aWidth = artboard.frame().width() + 500;
+            aWidth = artboard.frame().width() + this.config.sidebarWidth;
 
         sidebar.parentGroup().removeLayer(sidebar);
         artboard.addLayers([sidebar]);
@@ -122,7 +129,8 @@ com.notebook = {
             this.debugLog("No format to predicate");
             return false;
         }
-        var predicate = NSPredicate.predicateWithFormat(format.key,format.match),
+        var doc = this.ctx.document,
+            predicate = NSPredicate.predicateWithFormat(format.key,format.match),
             container = container || doc.currentPage(),
             layers;
 
@@ -156,6 +164,8 @@ com.notebook = {
             pageName = sidebar.parentGroup().name();
         
         this.setStringValue(layer,pageName);
+        layer.setIsEditingText(true);
+        layer.setIsEditingText(false);
     },
 
     setSidebarHeight: function(sidebar){
@@ -170,7 +180,8 @@ com.notebook = {
 
     getSidebar : function(){
         this.debugLog("getting sidebar")
-        var ab = [[doc currentPage] currentArtboard],
+        var doc = this.ctx.document,
+            ab = [[doc currentPage] currentArtboard],
             sidebar = this.predicate({key : "(name != NULL) && (name == %@)",match : "--nb--sidebar"}, ab);
 
         if(sidebar == false) {
@@ -254,8 +265,10 @@ com.notebook = {
     },
 
     addComment: function () {
-        this.debugLog("adding comment")
-        var elementSelected = this.checkSelection([selection count]);
+        this.debugLog("adding comment");
+        var selection = this.ctx.selection,
+            doc = this.ctx.document,
+            elementSelected = this.checkSelection([selection count]);
 
         if(elementSelected){
 
@@ -361,11 +374,13 @@ com.notebook = {
     },
 
     getBallsContainer : function(){
-        var artboard = [[doc currentPage] currentArtboard],
+        var selection = this.ctx.selection,
+            doc = this.ctx.document,
+            artboard = [[doc currentPage] currentArtboard],
             container = this.predicate({key : "(name != NULL) && (name == %@)",match : "--nb--balls"}, artboard);
 
         if(!container){
-            var cWidth = artboard.frame().width() - 500,
+            var cWidth = artboard.frame().width() - this.config.sidebarWidth,
                 cHeight = artboard.frame().height();
             container = artboard.addLayerOfType("group");
             container.setName("--nb--balls");
@@ -373,9 +388,8 @@ com.notebook = {
             container.frame().setHeight(cHeight);
             container.frame().setX(0);
             container.frame().setY(0);
+            container.setIsLocked(true);
         }
-
-        container.setIsLocked(true);
 
         return container;
     },
@@ -409,10 +423,11 @@ com.notebook = {
     createCommentsGroup : function(sidebar){
         this.debugLog("creating comment group")
         var gY = this.getBottomLinePos(sidebar),
+            groupWidth = this.config.sidebarWidth - (this.config.commentVMargin*2),
             group = sidebar.addLayerOfType("group");
             group.setName("--comments");
-            group.frame().setWidth(446);
-            group.frame().setX(32);
+            group.frame().setWidth(groupWidth);
+            group.frame().setX(this.config.commentVMargin);
             group.frame().setY(gY);
         return group;
     },
@@ -514,14 +529,17 @@ com.notebook = {
 
         this.commentRepositioning(sortedComments);
         this.commentRenumbering(sortedComments);
-        this.iRelocation();
+        var flag = this.getAsset("ManualRelocation");
+        if(flag==0) this.iRelocation();
         this.bringToFront();
         this.setSidebarHeight(sidebar);
     },
 
     bringToFront: function(){
         this.debugLog("bringing comments to front");
-        var sidebar = this.getSidebar(),
+        var selection = this.ctx.selection,
+            doc = this.ctx.document,
+            sidebar = this.getSidebar(),
             balls = this.getBallsContainer(),
             artboard = doc.currentPage().currentArtboard();
 
@@ -533,7 +551,9 @@ com.notebook = {
 
     iRelocation: function(){
         this.debugLog("relocating indicators")
-        var sidebar = this.getSidebar(),
+        var selection = this.ctx.selection,
+            doc = this.ctx.document,
+            sidebar = this.getSidebar(),
             comments = this.getCommentsGroup(sidebar).layers(),
             ab = doc.currentPage().currentArtboard(),
             ballsContainer = this.getBallsContainer();
@@ -714,7 +734,8 @@ com.notebook = {
 
     refreshPage: function() {
         this.debugLog("refreshing page")
-        var c = doc.currentPage();
+        var doc = this.ctx.document,
+            c = doc.currentPage();
         doc.setCurrentPage(0);
         doc.setCurrentPage(doc.pages().count() - 1);
         doc.setCurrentPage(c);
@@ -722,7 +743,9 @@ com.notebook = {
 
     addPage: function(name) {
         this.debugLog("adding page")
-        var page = doc.addBlankPage(),
+        var selection = this.ctx.selection,
+            doc = this.ctx.document,
+            page = doc.addBlankPage(),
             name = name || "New page";
         page.setName(name);
         //doc.setCurrentPage(page);
@@ -743,7 +766,8 @@ com.notebook = {
     },
 
     addOval: function(parent,name,bg,w,h,x,y){
-        var parent = parent || doc.currentPage(),
+        var doc = this.ctx.document,
+            parent = parent || doc.currentPage(),
             name = name || "new oval layer",
             bg = bg || "#000000",
             //bg = MSColor.colorWithSVGString(bg),
@@ -765,7 +789,8 @@ com.notebook = {
 
     addRect: function(parent,name,bg,w,h,x,y){
         this.debugLog("adding rect layer")
-        var parent = parent || doc.currentPage(),
+        var doc = this.ctx.document,
+            parent = parent || doc.currentPage(),
             name = name || "new rect layer",
             bg = bg || "#000000",
             //bg = MSColor.colorWithSVGString(bg),
@@ -794,9 +819,116 @@ com.notebook = {
 
     },
 
+    setSidebarStyle: function(theme){
+        this.debugLog("setting sidebar style");
+        var theme = theme || "dark";
+        if(theme == "sepia"){
+            var primary = "#494841",
+                secondary = "#828072",
+                separator = "#BDBCB5",
+                bgcolor = "#E4E3D6";
+        }
+
+        if(theme == "dark"){
+            var primary = "#f0f0f0",
+                secondary = "#aaaaaa",
+                separator = "#555555",
+                bgcolor = "#222222";
+        }
+
+        if(theme == "bright"){
+            var primary = "#222222",
+                secondary = "#777777",
+                separator = "#cccccc",
+                bgcolor = "#ffffff";
+        }
+        var sidebar = this.getSidebar(),
+            currentPage = 
+            comments = this.getCommentsGroup(),
+            background = this.predicate({key : "(name != NULL) && (name == %@)",match : 'sidebar-bg'}, sidebar) || false,
+            header = this.predicate({key : "(name != NULL) && (name == %@)",match : 'header-h1'}, sidebar) || false,
+            bottomLine = this.predicate({key : "(name != NULL) && (name == %@)",match : 'bottomLine'}, sidebar) || false,            
+            label = this.predicate({key : "(name != NULL) && (name == %@)",match : 'label'}, sidebar) || false,
+            label2 = this.predicate({key : "(name != NULL) && (name == %@)",match : 'label_Date'}, sidebar) || false,
+            label3 = this.predicate({key : "(name != NULL) && (name == %@)",match : 'label_Author'}, sidebar) || false,
+            value = this.predicate({key : "(name != NULL) && (name == %@)",match : 'value_Project'}, sidebar) || false,
+            value2 = this.predicate({key : "(name != NULL) && (name == %@)",match : 'value_Date'}, sidebar) || false,
+            value3 = this.predicate({key : "(name != NULL) && (name == %@)",match : 'value_Author'}, sidebar) || false,
+            labelScreen = this.predicate({key : "(name != NULL) && (name == %@)",match : 'label_screen'}, sidebar) || false,
+            pageTitle = this.predicate({key : "(name != NULL) && (name == %@)",match : 'Page Title'}, sidebar) || false,
+            commentTitle = this.predicate({key : "(name != NULL) && (name == %@)",match : 'comment title'}, comments) || false,
+            commentBody = this.predicate({key : "(name != NULL) && (name == %@)",match : 'comment body'}, comments) || false;
+
+
+
+        if(background) background.style().fill().color = MSColor.colorWithSVGString(bgcolor);
+        if(bottomLine) bottomLine[0].style().fill().color = MSColor.colorWithSVGString(separator);
+        if(header) this.updateTextStyleColor(header, primary)
+        if(label) this.updateTextStyleColor(label, secondary)
+        if(value) this.updateTextStyleColor(value, primary)
+        if(labelScreen) this.updateTextStyleColor(labelScreen, secondary)
+        if(pageTitle) this.updateTextStyleColor(pageTitle, primary)
+        if(commentTitle) this.updateTextStyleColor(commentTitle, primary)
+        if(commentBody) this.updateTextStyleColor(commentBody, secondary)
+        
+
+    },
+
+    // updateTextStyleColor: function(obj, color){
+    //     if(!obj) return;
+    //     var color = color || "#000000";
+
+    //     if(obj.length){
+    //         for (var i = 0; i < obj.count(); i++) {
+    //             var layer = [obj objectAtIndex:i];
+    //             layer.textColor = MSColor.colorWithSVGString(color);
+    //             layer.setIsEditingText(true);
+    //             layer.setIsEditingText(false);
+    //         };
+    //     }else{
+    //         obj.textColor = MSColor.colorWithSVGString(color);
+    //         obj.setIsEditingText(true);
+    //         obj.setIsEditingText(false);
+    //     }
+
+    //     this.ctx.document.reloadInspector();        
+        
+    // },
+
+    updateTextStyleColor: function(obj, color){
+        if(!obj) return;
+        var color = color || "#000000";
+
+        if(obj.length){
+            for (var i = 0; i < obj.count(); i++) {
+                var layer = [obj objectAtIndex:i];
+                layer.textColor = MSColor.colorWithSVGString(color);
+                layer.setIsEditingText(true);
+                layer.setIsEditingText(false);
+            };
+            obj = obj.objectAtIndex(0);
+        }else{
+            obj.textColor = MSColor.colorWithSVGString(color);
+            obj.setIsEditingText(true);
+            obj.setIsEditingText(false);
+        }
+
+        var docData = this.ctx.document.documentData();
+        var sharedStylesPredicate = NSPredicate.predicateWithFormat("objectID == %@", obj.style().sharedObjectID());
+        var sharedStyle = docData.layerTextStyles().objects().array().filteredArrayUsingPredicate(sharedStylesPredicate).firstObject();
+
+        if(sharedStyle) {
+            docData.layerTextStyles().synchroniseInstancesOfSharedObject_withInstance(sharedStyle, obj.style())
+        }
+        
+        this.ctx.document.reloadInspector();        
+        
+    },
+
     addTxt: function(parent,name,color,fontSize,string,w,h,x,y,fixed){
-        this.debugLog("adding text layer")
-        var parent = parent || doc.currentPage(),
+        this.debugLog("adding text layer");
+        var doc = this.ctx.document,
+            parent = parent || doc.currentPage(),
             name = name || "new text layer",
             color = color || "#000000",
             // color = [MSColor colorWithHex: color alpha: 1],
@@ -829,21 +961,22 @@ com.notebook = {
                 textLayer.setTextBehaviour(1) // BCTextBehaviourFixedWidth
             }
 
-            textLayer.setFontPostscriptName('Optima')
+            textLayer.setFontPostscriptName('HelveticaNeue')
 
         return textLayer;
     },
 
     getMetadata: function(){
 
-        var name = ([doc displayName]).split('.sketch')[0],
+        var selection = this.ctx.selection,
+            doc = this.ctx.document,
+            name = ([doc displayName]).split('.sketch')[0],
             author = NSUserName(),
             objToday = new Date(),
-            day = objToday.getDay(),
-            day = (day > 9) ? day : "0"+day,
+            day = objToday.getDate(),
             month = objToday.getMonth(),
             yr = objToday.getFullYear(),
-            date = day+"/"+month+"/"+yr;
+            date = month+"/"+day+"/"+yr;
 
         var meta = {
             name : name,
@@ -854,9 +987,25 @@ com.notebook = {
         return meta;
     },
 
+    updateMetadata: function(){
+        var doc = this.ctx.document,
+            meta = this.getMetadata(),
+            project = this.getAsset('value_Project'),
+            date = this.getAsset('value_Date'),
+            author = this.getAsset('value_Author'),
+            sidebar = this.getSidebar();
+
+        this.setStringValue(project, meta.name);
+        this.setStringValue(date, meta.date);
+        this.setStringValue(author, meta.author);
+        this.setSidebarPageName(sidebar);
+    },
+
     generateAssets: function(){
         this.debugLog("generating assets")
-        var firstCanvas = doc.currentPage(),
+        var selection = this.ctx.selection,
+            doc = this.ctx.document,
+            firstCanvas = doc.currentPage(),
             firstAB = doc.currentPage().currentArtboard(),
             sel = selection[0],
             layer = false,
@@ -869,7 +1018,7 @@ com.notebook = {
                 margin : this.config.commentVMargin,
                 bg : '#393B36',
                 separatorColor : '#4D4E4A',
-                contentW : (500 - (this.config.commentVMargin*2))
+                contentW : (this.config.sidebarWidth - (this.config.commentVMargin*2))
             };
 
     // Create sidebar
@@ -885,7 +1034,7 @@ com.notebook = {
         this.debugLog("generating assets: sidebar background")
         //            addRect(parent,name,bg,w,h,x,y)
         var bg = this.addRect(sidebar,'sidebar-bg', sc.bg, sc.width, sc.height, sc.x, sc.y);
-        this.storeStyle(bg,"sidebar:bg");
+        this.storeStyle(bg,"notebook:sidebar:bg");
 
         // Header
         this.debugLog("generating assets: sidebar header")
@@ -893,19 +1042,24 @@ com.notebook = {
             header.setName("header");
             header.frame().setWidth(sc.contentW);
             header.frame().setHeight(53);
-            header.frame().setX(sc.x);
-            header.frame().setY(sc.y);
+            header.frame().setX(sc.x+sc.margin);
+            header.frame().setY(sc.y+sc.margin);
         //              addTxt(parent,name,color,fontSize,w,h,x,y)
-        var logo = this.addTxt(header,'Sketch Notebook','#4C504A',20,'Sketch Notebook',sc.width,24,sc.margin,sc.margin),
+        var logo = this.addTxt(header,'header-h1','#777777',20,'Notes',sc.width,24,0,0),
             topLineY = logo.frame().y() + logo.frame().height() + 20,
-            topLine = this.addRect(header,'bottomLine', sc.separatorColor, sc.contentW, 1, sc.margin, topLineY);
+            topLine = this.addRect(header,'bottomLine', sc.separatorColor, sc.contentW, 1, 0, topLineY);
 
-        this.storeSymbol(header,"header");
+        this.storeStyle(logo,"notebook:sidebar:header");
+        this.storeStyle(topLine,"notebook:sidebar:separator");
+
+        var sepStyle = topLine.style().sharedObjectID();
+
+        this.storeSymbol(header,"notebook:header");
 
         // Metadata group
         this.debugLog("generating assets: sidebar metadata")
         var m = sidebar.addLayerOfType("group"),
-            mY = topLine.frame().y() + topLine.frame().height() + sc.margin;
+            mY = topLine.frame().y() + topLine.frame().height() + sc.margin*2;
             m.setName("Metadata");
             m.frame().setWidth(sc.contentW);
             //m.frame().setHeight(114);
@@ -937,33 +1091,35 @@ com.notebook = {
 
         // Metadata labels & values
         var newY = 0;
-        for (var i = 0; i < mInfo2.length; i++) {
-            var label = this.addTxt(m,'label_'+mInfo2[i].label,'#61625E',12,mInfo2[i].label.toUpperCase()+":",65,11,0,newY+2,fixed=true),
-                value = this.addTxt(m,'value_'+mInfo2[i].value,'#C4C5C3',14,mInfo2[i].value,360,21,80,newY,fixed=true),
+        for (var i = 0; i < mInfo2.length; i++) {            
+            var label = this.addTxt(m,'label','#61625E',12,mInfo2[i].label.toUpperCase()+":",65,11,0,newY+2,fixed=true),
+                value = this.addTxt(m,'value_'+mInfo2[i].label,'#C4C5C3',14,mInfo2[i].value,360,21,80,newY,fixed=true),
                 lid,vid;
             newY = newY+sc.margin;
             this.txtRefreshSize(label);
             this.txtRefreshSize(value);
             if(i==0){
-                this.storeStyle(label,"metadata:label");
+                this.storeStyle(label,"notebook:metadata:label");
                 lid = label.style().sharedObjectID();
-                this.storeStyle(value,"metadata:value");
+                this.storeStyle(value,"notebook:metadata:value");
                 vid = value.style().sharedObjectID();
             }else{
-                // label.style().setSharedObjectID(lid);
-                // value.style().setSharedObjectID(vid);
+                label.style().setSharedObjectID(lid);
+                value.style().setSharedObjectID(vid);
             }
         };
 
         var midLineY = newY + value.frame().height();
             midLine = this.addRect(m,'bottomLine', sc.separatorColor, sc.contentW, 1, 0, midLineY);
+            midLine.style().setSharedObjectID(sepStyle);
 
-        this.storeSymbol(m,"metadata");
+        this.storeSymbol(m,"notebook:metadata");
         // Screen name
         this.debugLog("generating assets: sidebar screen name")
         var sLx = midLine.absoluteRect().x(),
             sLy = midLine.absoluteRect().y() + midLine.absoluteRect().height() + sc.margin,
             screenLabel = this.addTxt(sidebar,'label_screen','#61625E',11,"SCREEN",100,11,0,0);
+            this.storeStyle(screenLabel,"notebook:sidebar:screen-name-label");
         
         screenLabel.absoluteRect().setX(sLx);
         screenLabel.absoluteRect().setY(sLy);
@@ -971,11 +1127,12 @@ com.notebook = {
         
 
         var sNy = screenLabel.absoluteRect().y() + screenLabel.absoluteRect().height() + 10,
-            screenName = this.addTxt(sidebar,'Page Title','#ffffff',18,"ARTBOARD NAME",300,21,sc.margin,sNy);
-            this.storeStyle(screenName,"sidebar:screen_name");
+            screenName = this.addTxt(sidebar,'Page Title','#ffffff',18,"ARTBOARD NAME",400,21,sc.margin,sNy);
+            this.storeStyle(screenName,"notebook:sidebar:screen-name");
 
         var bottomLineY = screenName.absoluteRect().y() + screenName.absoluteRect().height() + sc.margin,
             bottomLine = this.addRect(sidebar,'bottomLine', sc.separatorColor, sc.contentW, 1, sc.margin, bottomLineY);
+            bottomLine.style().setSharedObjectID(sepStyle);
         
     
     // Create comment
@@ -995,13 +1152,13 @@ com.notebook = {
         this.debugLog("generating assets: comment title")
         var titleY = 7,
             title = this.addTxt(comment,'comment title','#ffffff',14,"TITLE",400,16,40,titleY,fixed=true);
-            this.storeStyle(title,"comment:title");
+            this.storeStyle(title,"notebook:comment:title");
 
         //body
         this.debugLog("generating assets: comment body")
         var bodyY = title.absoluteRect().y() + title.absoluteRect().height() + 10,
             body = this.addTxt(comment,'comment body','#9C9D9B',14,"Comment",400,16,40,bodyY,fixed=true);
-        this.storeStyle(body,"comment:body");
+        this.storeStyle(body,"notebook:comment:body");
             //body.frame().setWidth(400);
             //body.setTextWidth(1)
         
@@ -1019,10 +1176,7 @@ com.notebook = {
         // index bg
         this.debugLog("generating assets: comment index bg")
         var iBg = this.addOval(index, 'bg', '#55910B', 30, 30, 0, 0);
-        // var firstObject = [[iBg layers] firstObject];
-        // [firstObject setFixedRadius:15];
-        // [firstObject resetPointsBasedOnUserInteraction];
-        this.storeStyle(iBg,"comment:index:bg");
+        this.storeStyle(iBg,"notebook:comment:index:bg");
 
         // index label
         this.debugLog("generating assets: comment index label")
@@ -1030,7 +1184,7 @@ com.notebook = {
         var iLabel = this.addTxt(index,'#','#ffffff',14,"#",30,30,0,0,fixed=true);
             iLabel.setTextAlignment(2);
             iLabel.setLineSpacing(23);
-            this.storeStyle(iLabel,"comment:index");
+            this.storeStyle(iLabel,"notebook:comment:index");
             //iLabel.setFontPostscriptName('Helvetica Neue');
 
         // center canvas on sidebar
@@ -1050,7 +1204,10 @@ com.notebook = {
 
     storeSymbol: function(obj,name){
         this.debugLog("storing symbol")
-        var symbols=doc.documentData().layerSymbols();
+        var selection = this.ctx.selection,
+            doc = this.ctx.document,
+            symbols = doc.documentData().layerSymbols();
+        symbols.addSymbolWithName_firstInstance(name, obj);
 
         //log(symbols.addSharedObjectWithName)
         // var sharedStyles=doc.documentData().layerStyles();
@@ -1060,32 +1217,60 @@ com.notebook = {
 
     storeStyle: function(obj,name){
         this.debugLog("storing styles")
-        var style = obj.style();
+        var selection = this.ctx.selection,
+            doc = this.ctx.document,
+            style = obj.style();
 
         if ([obj class] == MSTextLayer) {
             var sharedStyles=doc.documentData().layerTextStyles();
         }else{
             var sharedStyles=doc.documentData().layerStyles();
         }
-        sharedStyles.addSharedStyleWithName_firstInstance("nb:assets:"+name,style);
+        sharedStyles.addSharedStyleWithName_firstInstance(name,style);
 
     },
 
     getAsset: function(asset){
         this.debugLog("getting asset")
-        var assetsPage = this.predicate({key : "(name != NULL) && (name == %@)", match : "--nb--assets"}, doc);
+        var selection = this.ctx.selection,
+            doc = this.ctx.document,
+            assetsPage = this.predicate({key : "(name != NULL) && (name == %@)", match : "--nb--assets"}, doc);
         if(!assetsPage) assetsPage = this.generateAssets();
 
         var asset = this.predicate({key : "(name != NULL) && (name == %@)", match : asset}, assetsPage);
         return asset;
     },
 
-    deleteComment: function(){},
+    setManualRelocation: function(){
+        var doc = this.ctx.document,
+            assetsPage = this.predicate({key : "(name != NULL) && (name == %@)", match : "--nb--assets"}, doc),
+            flag = this.getAsset("ManualRelocation"),
+            container = this.getBallsContainer();
+        if(flag==0){
+            var f = assetsPage.addLayerOfType("group");
+                f.setName("ManualRelocation");
+        }
+
+        container.setIsLocked(false);
+
+    },
+
+    setAutomaticRelocation: function(){
+        var doc = this.ctx.document,
+            flag = this.getAsset("ManualRelocation"),
+            container = this.getBallsContainer();
+        if(flag!=0){
+            flag.parentGroup().removeLayer(flag);
+            container.setIsLocked(true);
+        }
+
+    },
 
     moveArtboards: function(page,offset){
         this.debugLog("moving artboards")
-        var page = page || doc.currentPage(),
-            offset = offset || 500,
+        var doc = this.ctx.document,
+            page = page || doc.currentPage(),
+            offset = offset || this.config.sidebarWidth,
             cab = page.currentArtboard(),
             cabName = cab.name(),
             cabX = cab.frame().x() + cab.frame().width(),
@@ -1103,7 +1288,9 @@ com.notebook = {
     },
 
     checkArtboardAndSidebar: function(){
-        var page = [doc currentPage],
+        var selection = this.ctx.selection,
+            doc = this.ctx.document,
+            page = [doc currentPage],
             artboard = [page currentArtboard];
         if(!artboard){
             this.showMessage("No comments to align");
@@ -1121,23 +1308,77 @@ com.notebook = {
 
     },
 
-    toggleSidebar: function(){
-        this.debugLog("toggling sidebar");
-        
+    togglePageSidebars: function(hideAll,showAll){
+        this.debugLog("toggling all sidebars");
+        var doc = this.ctx.document,
+            page = doc.currentPage(),
+            abs = page.artboards().objectEnumerator(),
+            hideAll = hideAll || false,
+            showAll = showAll || false;
+        while (a = abs.nextObject()) {
+            doc.currentPage().setCurrentArtboard(a)
+            this.toggleSidebar(hideAll,showAll);
+        }
+
+    },
+
+    resetComments: function(){
+        this.debugLog("reseting comments from current artboard");
         var sbExists = this.checkArtboardAndSidebar();
         if(!sbExists) return;
 
-        var page = [doc currentPage],
+        var doc = this.ctx.document,
+            page = [doc currentPage],
             artboard = [page currentArtboard],
             layers = [artboard layers],
             sidebar = false,
             artboard = [[doc currentPage] currentArtboard];
 
-        for (var i = 0, l = layers.count(); i < l; i++) {
+        for (var i = 0; i < layers.count(); i++) {
             var layer = [layers objectAtIndex:i];
             if(layer.name()=='--nb--sidebar'){
                 sidebar = layer;
-                break;
+            }
+        };
+        if(!sidebar) {
+            this.showMessage('No comments to delete');
+        }else{
+            var sidebar = this.getSidebar(),
+                ballsContainer = this.getBallsContainer(),
+                visibility = sidebar.isVisible(),
+                sidebarWidth = this.config.sidebarWidth;
+            if(visibility==1){
+                this.moveArtboards(page,-sidebarWidth);
+                [sidebar setIsVisible:false]
+                [ballsContainer setIsVisible:false]
+                width = artboard.frame().width() - sidebarWidth;
+                artboard.frame().setWidth(width);
+            }
+            sidebar.parentGroup().removeLayer(sidebar);
+            ballsContainer.parentGroup().removeLayer(ballsContainer);
+        }
+
+    },
+
+    toggleSidebar: function(hideAll,showAll){
+        this.debugLog("toggling sidebar");
+        var sbExists = this.checkArtboardAndSidebar();
+        if(!sbExists) return;
+
+        var selection = this.ctx.selection,
+            doc = this.ctx.document,
+            page = [doc currentPage],
+            artboard = [page currentArtboard],
+            layers = [artboard layers],
+            sidebar = false,
+            artboard = [[doc currentPage] currentArtboard];
+
+
+
+        for (var i = 0; i < layers.count(); i++) {
+            var layer = [layers objectAtIndex:i];
+            if(layer.name()=='--nb--sidebar'){
+                sidebar = layer;
             }
         };
         if(!sidebar) {
@@ -1146,14 +1387,16 @@ com.notebook = {
             var sidebar = this.getSidebar(),
                 ballsContainer = this.getBallsContainer(),
                 visibility = sidebar.isVisible(),
-                sidebarWidth = 500;
+                sidebarWidth = this.config.sidebarWidth;
             if(visibility==0){
+                if(hideAll) return;
                 this.moveArtboards(page,sidebarWidth);
                 width = artboard.frame().width() + sidebarWidth;
                 artboard.frame().setWidth(width);
                 [sidebar setIsVisible:true];
                 [ballsContainer setIsVisible:true]
             }else{
+                if(showAll) return;
                 this.moveArtboards(page,-sidebarWidth);
                 [sidebar setIsVisible:false]
                 [ballsContainer setIsVisible:false]

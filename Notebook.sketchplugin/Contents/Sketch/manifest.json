@@ -1,0 +1,42 @@
+{
+  "name" : "Notebook",
+  "author" : "Marcos Vidal",
+  "homepage": "http://marcosvid.al/sketch-notebook",
+  "bundleVersion": 1,
+  "identifier" : "com.notebook",
+  "version" : 0.1,
+  "description" : "Documenting design made easy",
+  "authorEmail" : "m@marcosvid.al",
+  "compatibleVersion": 3,
+
+  "commands" : [
+    {
+      "script" : "notebook.cocoascript",
+      "handler" : "addComment",
+      "shortcut" : "control alt cmd 9",
+      "name" : "Add Comment",
+      "identifier" : "add comment"
+    },
+    {
+      "script" : "notebook.cocoascript",
+      "handler" : "toggleCurrent",
+      "shortcut" : "control alt cmd 0",
+      "name" : "Toggle Notes Visibility",
+      "identifier" : "toggle current"
+    },
+    {
+      "script" : "notebook.cocoascript",
+      "handler" : "updateComments",
+      "shortcut" : "control alt cmd 8",
+      "name" : "Update Comments",
+      "identifier" : "update comments"
+    }
+  ],
+  "menu" : {
+    "items" : [
+      "add comment",
+      "update comments",
+      "toggle current"
+    ]
+  }
+}

@@ -1,0 +1,63 @@
+@import "notebook.js"
+
+function addComment(context) {
+	com.notebook.ctx = context;
+    com.notebook.addComment();
+}
+
+function showAll(context) {
+    var hideAll = false,
+ 		showAll = true;
+ 	com.notebook.ctx = context;
+	com.notebook.togglePageSidebars(hideAll,showAll);
+}
+
+function hideAll(context) {
+	var hideAll = true;
+	com.notebook.ctx = context;
+	com.notebook.togglePageSidebars(hideAll);
+}
+
+function toggleCurrent(context) {
+	com.notebook.ctx = context;
+	com.notebook.toggleSidebar(false,false);
+}
+
+function updateComments(context) {
+	com.notebook.ctx = context;
+	com.notebook.realignComments();
+}
+
+function resetComments(context){
+	com.notebook.ctx = context;
+	com.notebook.resetComments();
+}
+
+function updateMetadata(context){
+	com.notebook.ctx = context;
+	com.notebook.updateMetadata();
+}
+
+function setStyleSepia(context){
+	com.notebook.ctx = context;
+	com.notebook.setSidebarStyle("sepia");
+}
+
+function setStyleDark(context){
+	com.notebook.ctx = context;
+	com.notebook.setSidebarStyle("dark");
+}
+
+function setStyleBright(context){
+	com.notebook.ctx = context;
+	com.notebook.setSidebarStyle("bright");
+}
+
+function setManualRelocation(context){
+	com.notebook.ctx = context;
+	com.notebook.setManualRelocation();
+}
+function setAutomaticRelocation(context){
+	com.notebook.ctx = context;
+	com.notebook.setAutomaticRelocation();
+}
