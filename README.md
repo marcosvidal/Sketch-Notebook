@@ -7,7 +7,7 @@ Easily manage sidebar comments for documenting design.
 ## Download & Installation
 
 1. Download the plugin from http://marcosvid.al/sketch-notebook 
-2. Place the folder into your Sketch Plugins folder by navigating to Sketch > Plugins > Reveal Plugins Folder…
+2. Unzip the downloaded file and double click "Notebook.sketchplugin". It will be automatically installed into Sketch.
 
   
 ## Using the plugin
