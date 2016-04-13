@@ -1206,13 +1206,10 @@ com.notebook = {
         this.debugLog("storing symbol")
         var selection = this.ctx.selection,
             doc = this.ctx.document,
-            symbols = doc.documentData().layerSymbols();
-        symbols.addSymbolWithName_firstInstance(name, obj);
-
-        //log(symbols.addSharedObjectWithName)
-        // var sharedStyles=doc.documentData().layerStyles();
-        // symbols.addSharedStyleWithName_firstInstance("nbassets:sidebar:bg",bg.style());
-        //dataContainer.sharedStyleWithID(this.orig.style().sharedObjectID())
+            symbols = doc.documentData().layerSymbols(),
+            l = layers = [MSLayerArray arrayWithLayer:obj];
+            // symbols.addSymbolWithName_firstInstance(name, obj);
+            // [MSSymbolCreator createSymbolFromLayers:l withName:name onSymbolsPage:true]
     },
 
     storeStyle: function(obj,name){
