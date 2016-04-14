@@ -64,6 +64,11 @@ com.notebook = {
 
     },
 
+    methodsFor: function(obj){
+        log([obj class].mocha().instanceMethods())
+        log([obj class].mocha().instanceMethodsWithAncestors())
+    },
+
     refreshPage: function() {
         this.debugLog("refreshing page")
         var doc = this.ctx.document,
@@ -206,11 +211,6 @@ com.notebook = {
         };
         return nil;
         
-    },
-
-    methodsFor: function(obj){
-        log([obj class].mocha().instanceMethods())
-        log([obj class].mocha().instanceMethodsWithAncestors())
     },
 
     alertHandler: function(alert, responseCode){
@@ -382,7 +382,8 @@ com.notebook = {
         if(!container){
             var cWidth = artboard.frame().width() - this.config.sidebarWidth,
                 cHeight = artboard.frame().height();
-            container = artboard.addLayerOfType("group");
+            container = MSLayerGroup.new();
+            artboard.addLayers([container]);
             container.setName("--nb--balls");
             container.frame().setWidth(cWidth);
             container.frame().setHeight(cHeight);
@@ -424,7 +425,8 @@ com.notebook = {
         this.debugLog("creating comment group")
         var gY = this.getBottomLinePos(sidebar),
             groupWidth = this.config.sidebarWidth - (this.config.commentVMargin*2),
-            group = sidebar.addLayerOfType("group");
+            group = MSLayerGroup.new();
+            sidebar.addLayers([group]);
             group.setName("--comments");
             group.frame().setWidth(groupWidth);
             group.frame().setX(this.config.commentVMargin);
@@ -756,9 +758,10 @@ com.notebook = {
     addGroup: function(parent,name){
         this.debugLog("adding group layer")
         var parent = parent || doc.currentPage(),
-            group = parent.addLayerOfType("group"),
+            group = MSLayerGroup.new(),
             name = name || "new group";
-        
+
+        parent.addLayers([group]);
         group.setName(name);
         group.setNameIsFixed(true)
 
@@ -941,7 +944,8 @@ com.notebook = {
             y = y || 0,
             fixed = fixed || false; //fixed width
 
-        var textLayer = parent.addLayerOfType("text");
+        var textLayer = 
+        parent.addLayerOfType("text");
 
             textLayer.textColor = color;
             textLayer.fontSize = fontSize;
@@ -1024,7 +1028,9 @@ com.notebook = {
     // Create sidebar
         this.debugLog("generating assets: sidebar group")
         // group
-        var sidebar = assets.addLayerOfType("group");
+        var sidebar = MSLayerGroup.new();
+
+            assets.addLayers([sidebar]);
             sidebar.setName("sidebar");
             sidebar.frame().setWidth(sc.width);
             sidebar.frame().setHeight(sc.height);
@@ -1038,28 +1044,33 @@ com.notebook = {
 
         // Header
         this.debugLog("generating assets: sidebar header")
-        var header = sidebar.addLayerOfType("group");
+        var header = MSLayerGroup.new();
+            sidebar.addLayers([header]);
             header.setName("header");
             header.frame().setWidth(sc.contentW);
             header.frame().setHeight(53);
             header.frame().setX(sc.x+sc.margin);
             header.frame().setY(sc.y+sc.margin);
         //              addTxt(parent,name,color,fontSize,w,h,x,y)
-        var logo = this.addTxt(header,'header-h1','#777777',20,'Notes',sc.width,24,0,0),
+        var logo = this.addTxt(header,'header','#777777',20,'Notes',sc.width,24,0,0),
             topLineY = logo.frame().y() + logo.frame().height() + 20,
             topLine = this.addRect(header,'bottomLine', sc.separatorColor, sc.contentW, 1, 0, topLineY);
+
+        [topLine select:true byExpandingSelection:false];
+        [topLine select:false byExpandingSelection:false];
 
         this.storeStyle(logo,"notebook:sidebar:header");
         this.storeStyle(topLine,"notebook:sidebar:separator");
 
         var sepStyle = topLine.style().sharedObjectID();
 
-        this.storeSymbol(header,"notebook:header");
+        this.storeSymbol(header,"notebook_header");
 
         // Metadata group
         this.debugLog("generating assets: sidebar metadata")
-        var m = sidebar.addLayerOfType("group"),
-            mY = topLine.frame().y() + topLine.frame().height() + sc.margin*2;
+        var m = MSLayerGroup.new();
+            sidebar.addLayers([m]);
+        var mY = topLine.frame().y() + topLine.frame().height() + sc.margin*2;
             m.setName("Metadata");
             m.frame().setWidth(sc.contentW);
             //m.frame().setHeight(114);
@@ -1113,13 +1124,19 @@ com.notebook = {
             midLine = this.addRect(m,'bottomLine', sc.separatorColor, sc.contentW, 1, 0, midLineY);
             midLine.style().setSharedObjectID(sepStyle);
 
-        this.storeSymbol(m,"notebook:metadata");
+        [midLine select:true byExpandingSelection:false];
+        [midLine select:false byExpandingSelection:false];
+
+        this.storeSymbol(m,"notebook_metadata");
         // Screen name
         this.debugLog("generating assets: sidebar screen name")
-        var sLx = midLine.absoluteRect().x(),
-            sLy = midLine.absoluteRect().y() + midLine.absoluteRect().height() + sc.margin,
+        var sLx = sc.margin,
+            sLy = header.absoluteRect().height() + m.absoluteRect().y() + m.absoluteRect().height() + sc.margin * 3,
             screenLabel = this.addTxt(sidebar,'label_screen','#61625E',11,"SCREEN",100,11,0,0);
             this.storeStyle(screenLabel,"notebook:sidebar:screen-name-label");
+
+        log("x"+sLx);
+        log("y"+sLy);
         
         screenLabel.absoluteRect().setX(sLx);
         screenLabel.absoluteRect().setY(sLy);
@@ -1138,8 +1155,10 @@ com.notebook = {
     // Create comment
         // group
         this.debugLog("generating assets: comment")
-        var comment = assets.addLayerOfType("group"),
-            cX = sc.margin,
+        var comment = MSLayerGroup.new();
+            assets.addLayers([comment]);
+
+        var cX = sc.margin,
             cY = bottomLine.absoluteRect().y() + bottomLine.absoluteRect().height() + sc.margin;
 
         comment.setName("comment");
@@ -1166,7 +1185,8 @@ com.notebook = {
 
         // index group
         this.debugLog("generating assets: comment index")
-        var index = comment.addLayerOfType("group");
+        var index = MSLayerGroup.new();
+            comment.addLayers([index]);
             index.setName("index");
             index.frame().setWidth(40);
             index.frame().setHeight(40);
@@ -1183,7 +1203,7 @@ com.notebook = {
                         //function(parent,name,color,fontSize,string,w,h,x,y,fixed){
         var iLabel = this.addTxt(index,'#','#ffffff',14,"#",30,30,0,0,fixed=true);
             iLabel.setTextAlignment(2);
-            iLabel.setLineSpacing(23);
+            iLabel.setLineSpacing(28);
             this.storeStyle(iLabel,"notebook:comment:index");
             //iLabel.setFontPostscriptName('Helvetica Neue');
 
@@ -1204,15 +1224,9 @@ com.notebook = {
 
     storeSymbol: function(obj,name){
         this.debugLog("storing symbol")
-        var selection = this.ctx.selection,
-            doc = this.ctx.document,
-            symbols = doc.documentData().layerSymbols();
-        symbols.addSymbolWithName_firstInstance(name, obj);
-
-        //log(symbols.addSharedObjectWithName)
-        // var sharedStyles=doc.documentData().layerStyles();
-        // symbols.addSharedStyleWithName_firstInstance("nbassets:sidebar:bg",bg.style());
-        //dataContainer.sharedStyleWithID(this.orig.style().sharedObjectID())
+        var selectedLayer = this.ctx.selection.firstObject(),
+            layers = MSLayerArray.arrayWithLayers([obj]);
+            MSSymbolCreator.createSymbolFromLayers_withName_onSymbolsPage(layers,name,true);
     },
 
     storeStyle: function(obj,name){
@@ -1247,7 +1261,9 @@ com.notebook = {
             flag = this.getAsset("ManualRelocation"),
             container = this.getBallsContainer();
         if(flag==0){
-            var f = assetsPage.addLayerOfType("group");
+            var f = MSLayerGroup.new();
+
+                assetsPage.addLayers([f]);
                 f.setName("ManualRelocation");
         }
 
