@@ -4,7 +4,7 @@
   "homepage": "http://marcosvid.al/sketch-notebook",
   "bundleVersion": 1,
   "identifier" : "com.notebook",
-  "version" : 0.1,
+  "version" : 0.2,
   "description" : "Documenting design made easy",
   "authorEmail" : "m@marcosvid.al",
   "compatibleVersion": 3,
