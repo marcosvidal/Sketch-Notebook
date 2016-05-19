@@ -782,7 +782,7 @@ com.notebook = {
 
         var ovalShape = MSOvalShape.alloc().initWithFrame(NSMakeRect(x,y,w,h));
         var shapeGroup = MSShapeGroup.shapeWithPath(ovalShape)
-        var fill = shapeGroup.style().fills().addNewStylePart();
+        var fill = shapeGroup.style().addStylePartOfType(0);
         fill.color = MSColor.colorWithSVGString(bg);
 
         parent.addLayers([shapeGroup])
@@ -796,8 +796,6 @@ com.notebook = {
             parent = parent || doc.currentPage(),
             name = name || "new rect layer",
             bg = bg || "#000000",
-            //bg = MSColor.colorWithSVGString(bg),
-            //bgColor = [MSColor colorWithHex: bg alpha: 1],
             w = w || 400,
             h = h || 400,
             y = y || 0,
@@ -805,14 +803,11 @@ com.notebook = {
 
         var rect = parent.addLayerOfType("rectangle");
 
-        var fill = rect.style().fills().addNewStylePart();
+        var fill = rect.style().addStylePartOfType(0);
             fill.color = MSColor.colorWithSVGString(bg);
 
             rect.setName(name);
             rect.setNameIsFixed(true)
-            // rect.style().fills().addNewStylePart();
-            // rect.style().fill().setFillType(0);
-            // rect.style().fill().setColor(bgColor);
             rect.frame().setWidth(w);
             rect.frame().setHeight(h);
             rect.frame().setX(x);
@@ -1298,7 +1293,9 @@ com.notebook = {
             var x = a.frame().x(),
                 y = a.frame().y();
             if (a.name() != cabName && x > cabX && y <= cabY) {
-                a.frame().addX(offset)
+                var r = a.rect();
+                r.origin.x += offset;
+                a.setRect(r);
             }
         }
     },
