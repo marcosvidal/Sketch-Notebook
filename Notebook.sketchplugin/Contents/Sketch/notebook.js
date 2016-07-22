@@ -801,19 +801,17 @@ com.notebook = {
             y = y || 0,
             x = x || 0;
 
-        var rect = parent.addLayerOfType("rectangle");
+        var shape = MSRectangleShape.alloc().initWithFrame(NSMakeRect(x,y,w,h)),
+            shapeGroup = MSShapeGroup.shapeWithPath(shape);
+            parent.addLayers([shapeGroup])
 
-        var fill = rect.style().addStylePartOfType(0);
+        var fill = shapeGroup.style().addStylePartOfType(0);
             fill.color = MSColor.colorWithSVGString(bg);
 
-            rect.setName(name);
-            rect.setNameIsFixed(true)
-            rect.frame().setWidth(w);
-            rect.frame().setHeight(h);
-            rect.frame().setX(x);
-            rect.frame().setY(y);
+            shapeGroup.setName(name);
+            shapeGroup.setNameIsFixed(true)
 
-        return rect;
+        return shapeGroup;
 
     },
 
@@ -939,11 +937,7 @@ com.notebook = {
             y = y || 0,
             fixed = fixed || false; //fixed width
 
-        var textLayer = 
-        parent.addLayerOfType("text");
-
-            textLayer.textColor = color;
-            textLayer.fontSize = fontSize;
+        var textLayer = MSTextLayer.new();
 
             textLayer.setName(name);
             textLayer.setNameIsFixed(true);
@@ -961,6 +955,11 @@ com.notebook = {
             }
 
             textLayer.setFontPostscriptName('HelveticaNeue')
+
+            parent.addLayers([textLayer]);
+
+            textLayer.textColor = color;
+            textLayer.fontSize = fontSize;
 
         return textLayer;
     },
@@ -1198,7 +1197,7 @@ com.notebook = {
                         //function(parent,name,color,fontSize,string,w,h,x,y,fixed){
         var iLabel = this.addTxt(index,'#','#ffffff',14,"#",30,30,0,0,fixed=true);
             iLabel.setTextAlignment(2);
-            iLabel.setLineSpacing(28);
+            iLabel.setLineHeight(28);
             this.storeStyle(iLabel,"notebook:comment:index");
             //iLabel.setFontPostscriptName('Helvetica Neue');
 
