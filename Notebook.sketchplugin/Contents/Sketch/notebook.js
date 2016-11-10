@@ -8,7 +8,29 @@ com.notebook = {
         sidebarWidth : 500,
         sidebarHeight : 480,
         sidebarX : 0,
-        sidebarY : 0 
+        sidebarY : 0
+    },
+
+    colors : {
+        black : MSColor.colorWithRed_green_blue_alpha(0/255,0/255,0/255,1.0),
+        white : MSColor.colorWithRed_green_blue_alpha(255/255,255/255,255/255,1.0),
+        darkgrey : MSColor.colorWithRed_green_blue_alpha(57/255,59/255,54/255,1.0),
+        darkgrey2 : MSColor.colorWithRed_green_blue_alpha(77/255,78/255,74/255,1.0),
+        lightGrey : MSColor.colorWithRed_green_blue_alpha(97/255,98/255,94/255,1.0),
+        lightGrey2 : MSColor.colorWithRed_green_blue_alpha(196/255,197/255,195/255,1.0),
+        green : MSColor.colorWithRed_green_blue_alpha(85/255,145/255,11/255,1.0),
+        nccc : MSColor.colorWithRed_green_blue_alpha(204/255,204/255,204/255,1.0),
+        n222 : MSColor.colorWithRed_green_blue_alpha(34/255,34/255,34/255,1.0),
+        n777 : MSColor.colorWithRed_green_blue_alpha(119/255,119/255,119/255,1.0),
+        n1f : MSColor.colorWithRed_green_blue_alpha(31/255,31/255,31/255,1.0),
+        n555 : MSColor.colorWithRed_green_blue_alpha(85/255,85/255,85/255,1.0),
+        nf0 : MSColor.colorWithRed_green_blue_alpha(240/255,240/255,240/255,1.0),
+        naaa : MSColor.colorWithRed_green_blue_alpha(170/255,170/255,170/255,1.0),
+        BDBCB5 : MSColor.colorWithRed_green_blue_alpha(189/255,188/255,181/255,1.0),
+        sepia : MSColor.colorWithRed_green_blue_alpha(228/255,227/255,214/255,1.0),
+        sepia2 : MSColor.colorWithRed_green_blue_alpha(130/255,128/255,114/255,1.0),
+        sepia3 : MSColor.colorWithRed_green_blue_alpha(73/255,72/255,65/255,1.0),
+        body : MSColor.colorWithRed_green_blue_alpha(156/255,157/255,155/255,1.0)
     },
 
     ctx : {},
@@ -772,7 +794,7 @@ com.notebook = {
         var doc = this.ctx.document,
             parent = parent || doc.currentPage(),
             name = name || "new oval layer",
-            bg = bg || "#000000",
+            bg = bg || this.colors.black,
             //bg = MSColor.colorWithSVGString(bg),
             //bgColor = [MSColor colorWithHex: bg alpha: 1],
             w = w || 400,
@@ -783,7 +805,7 @@ com.notebook = {
         var ovalShape = MSOvalShape.alloc().initWithFrame(NSMakeRect(x,y,w,h));
         var shapeGroup = MSShapeGroup.shapeWithPath(ovalShape)
         var fill = shapeGroup.style().addStylePartOfType(0);
-        fill.color = MSColor.colorWithSVGString(bg);
+        fill.color = bg;
 
         parent.addLayers([shapeGroup])
 
@@ -795,7 +817,7 @@ com.notebook = {
         var doc = this.ctx.document,
             parent = parent || doc.currentPage(),
             name = name || "new rect layer",
-            bg = bg || "#000000",
+            bg = bg || this.colors.black,
             w = w || 400,
             h = h || 400,
             y = y || 0,
@@ -806,7 +828,7 @@ com.notebook = {
             parent.addLayers([shapeGroup])
 
         var fill = shapeGroup.style().addStylePartOfType(0);
-            fill.color = MSColor.colorWithSVGString(bg);
+            fill.color = bg;
 
             shapeGroup.setName(name);
             shapeGroup.setNameIsFixed(true)
@@ -819,27 +841,27 @@ com.notebook = {
         this.debugLog("setting sidebar style");
         var theme = theme || "dark";
         if(theme == "sepia"){
-            var primary = "#494841",
-                secondary = "#828072",
-                separator = "#BDBCB5",
-                bgcolor = "#E4E3D6";
+            var primary = this.colors.sepia3,
+                secondary = this.colors.sepia2,
+                separator = this.colors.BDBCB5
+                bgcolor = this.config.sepia;
         }
 
         if(theme == "dark"){
-            var primary = "#f0f0f0",
-                secondary = "#aaaaaa",
-                separator = "#555555",
-                bgcolor = "#222222";
+            var primary = this.colors.nf0,
+                secondary = this.colors.naaa ,
+                separator = this.colors.n555,
+                bgcolor = this.colors.darkgrey;
         }
 
         if(theme == "bright"){
-            var primary = "#222222",
-                secondary = "#777777",
-                separator = "#cccccc",
-                bgcolor = "#ffffff";
+            var primary = this.colors.n222,
+                secondary = this.colors.n777,
+                separator = this.colors.lightGrey,
+                bgcolor = this.colors.white;
         }
+
         var sidebar = this.getSidebar(),
-            currentPage = 
             comments = this.getCommentsGroup(),
             background = this.predicate({key : "(name != NULL) && (name == %@)",match : 'sidebar-bg'}, sidebar) || false,
             header = this.predicate({key : "(name != NULL) && (name == %@)",match : 'header-h1'}, sidebar) || false,
@@ -857,8 +879,9 @@ com.notebook = {
 
 
 
-        if(background) background.style().fill().color = MSColor.colorWithSVGString(bgcolor);
-        if(bottomLine) bottomLine[0].style().fill().color = MSColor.colorWithSVGString(separator);
+        if(background) background.style().fill().color = bgcolor;
+
+        if(bottomLine) bottomLine[0].style().fill().color = separator;
         if(header) this.updateTextStyleColor(header, primary)
         if(label) this.updateTextStyleColor(label, secondary)
         if(value) this.updateTextStyleColor(value, primary)
@@ -893,18 +916,18 @@ com.notebook = {
 
     updateTextStyleColor: function(obj, color){
         if(!obj) return;
-        var color = color || "#000000";
+        var color = color || this.colors.black;
 
         if(obj.length){
             for (var i = 0; i < obj.count(); i++) {
                 var layer = [obj objectAtIndex:i];
-                layer.textColor = MSColor.colorWithSVGString(color);
+                layer.textColor = color;
                 layer.setIsEditingText(true);
                 layer.setIsEditingText(false);
             };
             obj = obj.objectAtIndex(0);
         }else{
-            obj.textColor = MSColor.colorWithSVGString(color);
+            obj.textColor = color;
             obj.setIsEditingText(true);
             obj.setIsEditingText(false);
         }
@@ -926,9 +949,7 @@ com.notebook = {
         var doc = this.ctx.document,
             parent = parent || doc.currentPage(),
             name = name || "new text layer",
-            color = color || "#000000",
-            // color = [MSColor colorWithHex: color alpha: 1],
-            color = MSColor.colorWithSVGString(color),
+            color = color || this.colors.black,
             fontSize = fontSize || 14,
             string = string || "Type something",
             w = w || 400,
@@ -1014,8 +1035,8 @@ com.notebook = {
                 x : 0,
                 y : 0,
                 margin : this.config.commentVMargin,
-                bg : '#393B36',
-                separatorColor : '#4D4E4A',
+                bg : this.colors.darkgrey,
+                separatorColor : this.colors.darkgrey2,
                 contentW : (this.config.sidebarWidth - (this.config.commentVMargin*2))
             };
 
@@ -1046,7 +1067,7 @@ com.notebook = {
             header.frame().setX(sc.x+sc.margin);
             header.frame().setY(sc.y+sc.margin);
         //              addTxt(parent,name,color,fontSize,w,h,x,y)
-        var logo = this.addTxt(header,'header','#777777',20,'Notes',sc.width,24,0,0),
+        var logo = this.addTxt(header,'header',this.colors.n777,20,'Notes',sc.width,24,0,0),
             topLineY = logo.frame().y() + logo.frame().height() + 20,
             topLine = this.addRect(header,'bottomLine', sc.separatorColor, sc.contentW, 1, 0, topLineY);
 
@@ -1097,8 +1118,8 @@ com.notebook = {
         // Metadata labels & values
         var newY = 0;
         for (var i = 0; i < mInfo2.length; i++) {            
-            var label = this.addTxt(m,'label','#61625E',12,mInfo2[i].label.toUpperCase()+":",65,11,0,newY+2,fixed=true),
-                value = this.addTxt(m,'value_'+mInfo2[i].label,'#C4C5C3',14,mInfo2[i].value,360,21,80,newY,fixed=true),
+            var label = this.addTxt(m,'label',this.colors.lightGrey,12,mInfo2[i].label.toUpperCase()+":",65,11,0,newY+2,fixed=true),
+                value = this.addTxt(m,'value_'+mInfo2[i].label,this.colors.lightGrey2,14,mInfo2[i].value,360,21,80,newY,fixed=true),
                 lid,vid;
             newY = newY+sc.margin;
             this.txtRefreshSize(label);
@@ -1126,11 +1147,8 @@ com.notebook = {
         this.debugLog("generating assets: sidebar screen name")
         var sLx = sc.margin,
             sLy = header.absoluteRect().height() + m.absoluteRect().y() + m.absoluteRect().height() + sc.margin * 3,
-            screenLabel = this.addTxt(sidebar,'label_screen','#61625E',11,"SCREEN",100,11,0,0);
+            screenLabel = this.addTxt(sidebar,'label_screen',this.colors.lightGrey,11,"SCREEN",100,11,0,0);
             this.storeStyle(screenLabel,"notebook:sidebar:screen-name-label");
-
-        log("x"+sLx);
-        log("y"+sLy);
         
         screenLabel.absoluteRect().setX(sLx);
         screenLabel.absoluteRect().setY(sLy);
@@ -1138,7 +1156,7 @@ com.notebook = {
         
 
         var sNy = screenLabel.absoluteRect().y() + screenLabel.absoluteRect().height() + 10,
-            screenName = this.addTxt(sidebar,'Page Title','#ffffff',18,"ARTBOARD NAME",400,21,sc.margin,sNy);
+            screenName = this.addTxt(sidebar,'Page Title',this.colors.white,18,"ARTBOARD NAME",400,21,sc.margin,sNy);
             this.storeStyle(screenName,"notebook:sidebar:screen-name");
 
         var bottomLineY = screenName.absoluteRect().y() + screenName.absoluteRect().height() + sc.margin,
@@ -1164,13 +1182,13 @@ com.notebook = {
         //title
         this.debugLog("generating assets: comment title")
         var titleY = 7,
-            title = this.addTxt(comment,'comment title','#ffffff',14,"TITLE",400,16,40,titleY,fixed=true);
+            title = this.addTxt(comment,'comment title',this.colors.white,14,"TITLE",400,16,40,titleY,fixed=true);
             this.storeStyle(title,"notebook:comment:title");
 
         //body
         this.debugLog("generating assets: comment body")
         var bodyY = title.absoluteRect().y() + title.absoluteRect().height() + 10,
-            body = this.addTxt(comment,'comment body','#9C9D9B',14,"Comment",400,16,40,bodyY,fixed=true);
+            body = this.addTxt(comment,'comment body',this.colors.body,14,"Comment",400,16,40,bodyY,fixed=true);
         this.storeStyle(body,"notebook:comment:body");
             //body.frame().setWidth(400);
             //body.setTextWidth(1)
@@ -1189,13 +1207,13 @@ com.notebook = {
 
         // index bg
         this.debugLog("generating assets: comment index bg")
-        var iBg = this.addOval(index, 'bg', '#55910B', 30, 30, 0, 0);
+        var iBg = this.addOval(index, 'bg', this.colors.green, 30, 30, 0, 0);
         this.storeStyle(iBg,"notebook:comment:index:bg");
 
         // index label
         this.debugLog("generating assets: comment index label")
                         //function(parent,name,color,fontSize,string,w,h,x,y,fixed){
-        var iLabel = this.addTxt(index,'#','#ffffff',14,"#",30,30,0,0,fixed=true);
+        var iLabel = this.addTxt(index,'#',this.colors.white,14,"#",30,30,0,0,fixed=true);
             iLabel.setTextAlignment(2);
             iLabel.setLineHeight(28);
             this.storeStyle(iLabel,"notebook:comment:index");
