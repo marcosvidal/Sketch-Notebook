@@ -307,7 +307,7 @@ com.notebook = {
             var alreadyCommented = this.isCommented(el);
 
             if(alreadyCommented) {
-                this.showMessage("Dude, this layer is already commented...")
+                this.showMessage("Yo, this layer is already commented...")
                 return;
             }
 
@@ -1330,7 +1330,7 @@ com.notebook = {
         var sidebarExists = this.predicate({key : "(name != NULL) && (name == %@)", match : '--nb--sidebar'}, artboard);
 
         if (!sidebarExists){
-            this.showMessage("Dude, this page has no comments! Use 'ctrl + alt + ⌘ + 9' to add a new one");
+            this.showMessage("Yo, this page has no comments! Use 'ctrl + alt + ⌘ + 9' to add a new one");
             return false;
         }
 
