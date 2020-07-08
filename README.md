@@ -1,4 +1,4 @@
->**New version available:** Download Notebook Pro from http://marcosvid.al/sketch-notebook
+>**New version available:** Download Notebook 2 from https://owl.tools
 
 # Sketch Notebook
 
